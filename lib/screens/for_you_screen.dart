@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ForYouScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class ForYouScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 16),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/profile');
+                              Navigator.pushNamed(context, ProfileScreen.routeName);
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[200],

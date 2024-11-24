@@ -9,19 +9,19 @@ class SignupCubit extends Cubit<SignupState> {
   final AuthRepository authRepository;
   SignupCubit({required this.authRepository}) : super(SignupState.initial());
 
-  Future<void> signup({required String email, required String password}) async {
-    emit(state.copyWith(signinStatus: SignupStatus.submiting));
+ Future<void> signup({required String email, required String password}) async {
+  emit(state.copyWith(signupStatus: SignupStatus.submiting));  // Fixed
 
-    try {
-      await authRepository.signin(email: email, password: password);
-      emit(state.copyWith(signinStatus: SignupStatus.success));
-    } on CustomError catch (e) {
-      emit(state.copyWith(signinStatus: SignupStatus.error, error: e));
-    }
+  try {
+    await authRepository.signup(email: email, password: password);
+    emit(state.copyWith(signupStatus: SignupStatus.success));  // Fixed
+  } on CustomError catch (e) {
+    emit(state.copyWith(signupStatus: SignupStatus.error, error: e));  // Fixed
   }
+}
   void resetErrorState() {
   emit(state.copyWith(
-    signinStatus: SignupStatus.initial,
+    signupStatus: SignupStatus.initial,
     error: null,
   ));
 }

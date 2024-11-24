@@ -4,27 +4,27 @@ part of 'signup_cubit.dart';
 enum SignupStatus { initial, submiting, success, error }
 
 class SignupState extends Equatable {
-  final SignupStatus signinStatus;
+  final SignupStatus signupStatus;
   final CustomError error;
   SignupState({
-    required this.signinStatus,
+    required this.signupStatus,
     required this.error,
   });
 
   factory SignupState.initial() {
     return SignupState(
-        signinStatus: SignupStatus.initial, error: CustomError());
+        signupStatus: SignupStatus.initial, error: CustomError());
   }
 
   @override
-  List<Object> get props => [signinStatus, error];
+  List<Object> get props => [signupStatus, error];
 
   SignupState copyWith({
-    SignupStatus? signinStatus,
+    SignupStatus? signupStatus,
     CustomError? error,
   }) {
     return SignupState(
-      signinStatus: signinStatus ?? this.signinStatus,
+      signupStatus: signupStatus ?? this.signupStatus,
       error: error ?? this.error,
     );
   }

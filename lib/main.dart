@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
+import 'package:ecommerce_app/blocs/signup/signup_cubit.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
+import 'package:ecommerce_app/repositories/profile_repository.dart';
 import 'package:ecommerce_app/screens/registration/signin_screen.dart';
 import 'package:ecommerce_app/screens/registration/signup_screen.dart';
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
@@ -33,6 +36,11 @@ class MyApp extends StatelessWidget {
               firebaseFirestore: FirebaseFirestore.instance,
               firebaseAuth: FirebaseAuth.instance),
         ),
+        RepositoryProvider<ProfileRepository>(
+          create: (context) => ProfileRepository(
+            firebaseFirestore: FirebaseFirestore.instance,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -45,7 +53,17 @@ class MyApp extends StatelessWidget {
             create: (context) => SigninCubit(
               authRepository: context.read<AuthRepository>(),
             ),
-          )
+          ),
+          BlocProvider<SignupCubit>(
+            create: (context) => SignupCubit(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+           BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(
+              profileRepository: context.read<ProfileRepository>(),
+            ),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(

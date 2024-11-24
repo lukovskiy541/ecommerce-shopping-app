@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
+import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:ecommerce_app/utils/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,6 +57,13 @@ class _LoginFormState extends State<LoginForm> {
         if (state.signinStatus == SigninStatus.error) {
             await errorDialog(context, state.error);
           }
+
+          if (state.signinStatus == SigninStatus.success) {
+           Navigator.of(context).pushNamedAndRemoveUntil(
+            ProfileScreen.routeName,
+            ModalRoute.withName('/'),
+          );
+        }
       },
       builder: (context, state) {
         return Form(
