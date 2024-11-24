@@ -26,11 +26,30 @@ class ForYouScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Для тебе', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),)
+                      const Text(
+                        'Для тебе',
+                        style: TextStyle(
+                            fontSize: 35, fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/profile');
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey[200],
+                              child: const Icon(Icons.person),
+                            ),
+                          ))
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     height: 40,
                     decoration: BoxDecoration(
@@ -39,8 +58,7 @@ class ForYouScreen extends StatelessWidget {
                     ),
                     child: TextField(
                       textAlignVertical: TextAlignVertical.center,
-                      cursorHeight:
-                          20,
+                      cursorHeight: 20,
                       style: const TextStyle(
                         fontSize: 17,
                         height: 0.9,
@@ -50,18 +68,17 @@ class ForYouScreen extends StatelessWidget {
                         hintText: 'Пошук',
                         hintStyle: TextStyle(
                             fontSize: 17,
-                            height:
-                                1.1,
+                            height: 1.1,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade600),
                         prefixIcon: const Icon(
                           Icons.search,
                           color: Colors.grey,
-                          size:
-                              20,
+                          size: 20,
                         ),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(bottom: 3, top: -3),
+                        contentPadding:
+                            const EdgeInsets.only(bottom: 3, top: -3),
                       ),
                     ),
                   ),

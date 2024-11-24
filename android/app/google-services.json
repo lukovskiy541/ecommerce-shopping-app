@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "53818240120",
+    "project_id": "ml-ecommerce-app",
+    "storage_bucket": "ml-ecommerce-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53818240120:android:6d94edecf18eb8bc55518d",
+        "android_client_info": {
+          "package_name": "com.example.mlecommerceapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8c4AkReN3rGM7PJt2mkL0z61XDJpa7S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
