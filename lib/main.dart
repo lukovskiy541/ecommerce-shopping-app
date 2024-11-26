@@ -8,6 +8,7 @@ import 'package:ecommerce_app/repositories/profile_repository.dart';
 import 'package:ecommerce_app/screens/registration/signin_screen.dart';
 import 'package:ecommerce_app/screens/registration/signup_screen.dart';
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
+import 'package:ecommerce_app/screens/search_screen.dart';
 import 'package:ecommerce_app/utils/my_flutter_app_icons.dart';
 import 'package:ecommerce_app/screens/for_you_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,10 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
     ForYouScreen(),
-    Icon(
-      Icons.camera,
-      size: 150,
-    ),
+    SearchScreen(),
     Icon(
       Icons.chat,
       size: 150,

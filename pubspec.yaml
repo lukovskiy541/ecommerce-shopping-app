@@ -80,6 +80,7 @@ flutter:
     - assets/brand3.jpg
     - assets/brand.jpg
     - assets/adv.jpg
+    - assets/shopping_type.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
