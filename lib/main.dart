@@ -5,10 +5,13 @@ import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
 import 'package:ecommerce_app/blocs/signup/signup_cubit.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
+import 'package:ecommerce_app/screens/bucket_screen.dart';
+import 'package:ecommerce_app/screens/liked_screen.dart';
 import 'package:ecommerce_app/screens/registration/signin_screen.dart';
 import 'package:ecommerce_app/screens/registration/signup_screen.dart';
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:ecommerce_app/screens/search_screen.dart';
+import 'package:ecommerce_app/screens/shops_screen.dart';
 import 'package:ecommerce_app/utils/my_flutter_app_icons.dart';
 import 'package:ecommerce_app/screens/for_you_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -98,18 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _pages = <Widget>[
     ForYouScreen(),
     SearchScreen(),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
-    Icon(
-      Icons.call,
-      size: 150,
-    ),
-    Icon(
-      Icons.call,
-      size: 150,
-    ),
+    FullscreenBackgroundImage(),
+    LikedScreen(),
+    ShopsScreen()
   ];
 
   void _onItemTapped(int index) {
