@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
+import 'package:ecommerce_app/widgets/popular_products.dart';
+import 'package:ecommerce_app/widgets/products_of_day.dart';
 import 'package:flutter/material.dart';
 
 class ForYouScreen extends StatelessWidget {
@@ -7,6 +9,7 @@ class ForYouScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: ClampingScrollPhysics(),
       slivers: <Widget>[
         SliverAppBar(
           floating: true,
@@ -39,7 +42,8 @@ class ForYouScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 16),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, ProfileScreen.routeName);
+                              Navigator.pushNamed(
+                                  context, ProfileScreen.routeName);
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[200],
@@ -89,18 +93,176 @@ class ForYouScreen extends StatelessWidget {
           ),
         ),
         SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Container(
-                color: !index.isOdd ? Colors.white : Colors.black12,
-                height: 100.0,
-                child: Center(
-                  child: Text('$index', textScaler: const TextScaler.linear(5)),
+          delegate: SliverChildListDelegate([
+            SizedBox(
+              height: 16,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/subscription_banner.jpg'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              );
-            },
-            childCount: 50,
-          ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    'assets/sale.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    'assets/sale2.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            PopularProducts(),
+            ProductsOfDay(),
+            ProductsOfDay(),
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    'assets/brand1.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    'assets/brand2.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  child: Image.asset(
+                    'assets/brand3.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 150,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                          color: Colors.grey,
+                          height: 150,
+                          width: 200,
+                          child: Image.asset(
+                            'assets/brand.jpg',
+                            height: 150,
+                            width: 200,
+                            fit: BoxFit.cover,
+                          )));
+                },
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 400,
+              child: PageView.builder(
+                controller: PageController(
+                  viewportFraction: 0.9,
+                  initialPage: 0,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          color: Colors.grey,
+                          height: 200,
+                          width: 390,
+                          child: Image.asset(
+                            'assets/adv.jpg',
+                            height: 300,
+                            width: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Text(
+                          'Щоб закутатись',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        Text(
+                          'тепло і вигідно',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              
+            ),
+          ]),
         ),
       ],
     );

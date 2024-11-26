@@ -42,6 +42,8 @@ dependencies:
   equatable: ^2.0.7
   validators: ^3.0.0
 
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -69,6 +71,15 @@ flutter:
   assets:
     - assets/start-splash.png
     - assets/logo.svg
+    - assets/subscription_banner.jpg
+    - assets/sale.jpg
+    - assets/sale2.jpg
+    - assets/shoe.jpg
+    - assets/brand1.jpg
+    - assets/brand2.jpg
+    - assets/brand3.jpg
+    - assets/brand.jpg
+    - assets/adv.jpg
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
