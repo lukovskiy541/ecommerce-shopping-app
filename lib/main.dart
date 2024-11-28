@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce_app/blocs/categories/categories_bloc.dart';
+import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
 import 'package:ecommerce_app/blocs/signup/signup_cubit.dart';
-import 'package:ecommerce_app/models/category_model.dart';
-import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
+import 'package:ecommerce_app/repositories/categories_repository.dart';
+import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
 import 'package:ecommerce_app/screens/bucket_screen.dart';
 import 'package:ecommerce_app/screens/liked_screen.dart';
@@ -14,6 +16,7 @@ import 'package:ecommerce_app/screens/registration/signup_screen.dart';
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:ecommerce_app/screens/search_screen.dart';
 import 'package:ecommerce_app/screens/shops_screen.dart';
+import 'package:ecommerce_app/screens/splash_screen.dart';
 import 'package:ecommerce_app/utils/my_flutter_app_icons.dart';
 import 'package:ecommerce_app/screens/for_you_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,132 +24,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-Future<void> 
-
-Future<void> populateFirestore() async {
-  final firestore = FirebaseFirestore.instance;
-
-  List<Map<String, dynamic>> categories = [
-    {
-      'name': 'Woman',
-      'displayName': 'Жінкам',
-      'imageUrl': 'https://example.com/shoes-category.jpg',
-      'subCategories': [
-        {
-          'id': 'sub1',
-          'name': 'Взуття',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub2',
-          'name': 'Черевики та чоботи',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub3',
-          'name': 'Верхній одяг',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub4',
-          'name': 'Одяг',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub5',
-          'name': 'Кросівки та кеди',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub6',
-          'name': 'Кофти та светри',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub7',
-          'name': 'Аксесуари',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub8',
-          'name': 'Джинси та штани',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub9',
-          'name': 'Косметика',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-        {
-          'id': 'sub10',
-          'name': 'Сумки',
-          'imageUrl':
-              'https://images.kladit.com/Ta-Ha85UDgouQ1KPNGaVd-6IP4miuSxZtSc7I7t5S3s-img_6509.jpg'
-        },
-      ],
-    },
-  ];
-
-  List<Category> categorys = [];
-
-  for (var category in categories) {
-    DocumentReference categoryRef =
-        await firestore.collection('categories').add({
-      'name': category['name'],
-      'displayName': category['displayName'],
-      'imageUrl': category['imageUrl'],
-      'subCategories': category['subCategories'],
-    });
-
-    List<SubCategory> subCategories = (category['subCategories'] as List)
-        .map((subCategory) => SubCategory.fromMap(subCategory))
-        .toList();
-
-    categorys.add(Category(
-      id: categoryRef.id,
-      name: category['name'],
-      imageUrl: category['imageUrl'],
-      subCategories: subCategories,
-    ));
-  }
-
-  DocumentReference productRef = await firestore.collection('products').add({
-    'name': 'Nike Air Max',
-    'description': 'Comfortable running shoes',
-    'price': 2999.0,
-    'imageUrl': 'https://example.com/nike-air-max.jpg',
-    'category': categorys[0].toJson(), // ID категорії
-    'subCategory': categorys[0].subCategories[0].toJson(), // ID підкатегорії
-    'availableSizes': ['40', '41', '42', '43'],
-    'availableColors': ['Black', 'White', 'Red'],
-    'bonusPoints': 50,
-    'bonusPointsForSubscribers': 75,
-    'brand': 'Nike',
-    'seller': 'Nike Official Store',
-    'stock': 100,
-  });
-
-
-  print('Categories and products uploaded successfully');
-}
+import 'screens/catalog/catalog_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  loadProducts();
-  populateFirestore();
+
   runApp(const MyApp());
 }
 
@@ -155,6 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(
@@ -167,43 +53,30 @@ class MyApp extends StatelessWidget {
             firebaseFirestore: FirebaseFirestore.instance,
           ),
         ),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(
-              authRepository: context.read<AuthRepository>(),
-            ),
+        RepositoryProvider<ProductsRepository>(
+          create: (context) => ProductsRepository(
+            firebaseFirestore: FirebaseFirestore.instance,
           ),
-          BlocProvider<SigninCubit>(
-            create: (context) => SigninCubit(
-              authRepository: context.read<AuthRepository>(),
-            ),
-          ),
-          BlocProvider<SignupCubit>(
-            create: (context) => SignupCubit(
-              authRepository: context.read<AuthRepository>(),
-            ),
-          ),
-          BlocProvider<ProfileCubit>(
-            create: (context) => ProfileCubit(
-              profileRepository: context.read<ProfileRepository>(),
-            ),
-          ),
-        ],
-        child: MaterialApp(
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal.shade400),
-            useMaterial3: true,
-          ),
-          debugShowCheckedModeBanner: false,
-          routes: {
-            SignInScreen.routeName: (context) => SignInScreen(),
-            SignUpScreen.routeName: (context) => SignUpScreen(),
-            ProfileScreen.routeName: (context) => ProfileScreen(),
-            '/': (context) => MyHomePage(),
-          },
         ),
+        RepositoryProvider<CategoriesRepository>(
+          create: (context) => CategoriesRepository(
+            firebaseFirestore: FirebaseFirestore.instance,
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal.shade400),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          SignInScreen.routeName: (context) => SignInScreen(),
+          SignUpScreen.routeName: (context) => SignUpScreen(),
+          ProfileScreen.routeName: (context) => ProfileScreen(),
+          '/': (context) => MyHomePage(),
+          CatalogScreen.routeName: (context) => CatalogScreen(),
+        },
       ),
     );
   }
@@ -227,6 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
     LikedScreen(),
     ShopsScreen()
   ];
+
+
+
 
   void _onItemTapped(int index) {
     setState(() {

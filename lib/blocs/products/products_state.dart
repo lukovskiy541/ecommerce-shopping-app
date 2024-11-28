@@ -2,27 +2,39 @@
 
 part of 'products_bloc.dart';
 
+enum ProductsStatus {
+  initial,
+  loading,
+  loaded,
+  error,
+}
+
 class ProductsState extends Equatable {
   final List<Product> products;
+  final ProductsStatus status;
   ProductsState({
     required this.products,
+    required this.status,
   });
 
   factory ProductsState.Initial() {
-    return ProductsState(products: []);
+    return ProductsState(products: [], status: ProductsStatus.initial);
   }
+
+
+  @override
+  List<Object> get props => [products, status];
 
   ProductsState copyWith({
     List<Product>? products,
+    ProductsStatus? status,
   }) {
     return ProductsState(
       products: products ?? this.products,
+      status: status ?? this.status,
     );
   }
 
   @override
-  String toString() => 'ProductsState(products: $products)';
-
-  @override
-  List<Object> get props => [products];
+  bool get stringify => true;
 }

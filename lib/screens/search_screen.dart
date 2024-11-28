@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
             [
               GestureDetector(
                 onTap: () {
-                  
+                  Navigator.pushNamed(context, '/catalog');
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15.0),
