@@ -1,11 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Category {
   final String id;
   final String name;
+  final String imageUrl;
   final List<SubCategory> subCategories;
 
   Category({
     required this.id,
     required this.name,
+    required this.imageUrl,
     required this.subCategories,
   });
 
@@ -21,6 +24,7 @@ class Category {
     return Category(
       id: json['id'],
       name: json['name'],
+      imageUrl: json['imageUrl'],
       subCategories: (json['subCategories'] as List<dynamic>)
           .map((sub) => SubCategory.fromJson(sub))
           .toList(),
@@ -31,19 +35,30 @@ class Category {
 class SubCategory {
   final String id;
   final String name;
-  final String parentCategoryId;
+
+   final String imageUrl;
 
   SubCategory({
     required this.id,
     required this.name,
-    required this.parentCategoryId,
+    required this.imageUrl,
+
   });
+
+  factory SubCategory.fromMap(Map<String, dynamic> map) {
+    return SubCategory(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
-      'parentCategoryId': parentCategoryId,
+      'imageUrl': imageUrl,
+
     };
   }
 
@@ -51,7 +66,8 @@ class SubCategory {
     return SubCategory(
       id: json['id'],
       name: json['name'],
-      parentCategoryId: json['parentCategoryId'],
+      imageUrl: json['nimageUrlme'],
+
     );
   }
 }

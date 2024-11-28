@@ -1,10 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:ecommerce_app/models/category_model.dart';
+
 class Product {
   final String id;
   final String name;
   final String description;
   final double price;
   final String imageUrl;
-  final String category;
+  final Category category;
+  final SubCategory subCategory;
   final List<String> availableSizes;
   final List<String> availableColors;
   final int bonusPoints;
@@ -21,6 +27,7 @@ class Product {
     required this.price,
     required this.imageUrl,
     required this.category,
+    required this.subCategory,
     required this.availableSizes,
     required this.availableColors,
     required this.bonusPoints,
@@ -31,6 +38,27 @@ class Product {
     this.stock = 0,
   });
 
+  factory Product.fromFirestore(DocumentSnapshot doc) {
+  Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  return Product(
+    id: doc.id, // Використовуємо id документа з Firestore
+    name: data['name'] ?? '',
+    description: data['description'] ?? '',
+    price: (data['price'] ?? 0.0).toDouble(),
+    imageUrl: data['imageUrl'],
+    category: data['category'],
+    subCategory: data['subCategory'] ?? '',
+    availableSizes: List<String>.from(data['availableSizes'] ?? []),
+    availableColors: List<String>.from(data['availableColors'] ?? []),
+    bonusPoints: data['bonusPoints'] ?? 0,
+    bonusPointsForSubscribers: data['bonusPointsForSubscribers'] ?? 0,
+    brand: data['brand'] ?? '',
+    seller: data['seller'] ?? '',
+    isFavorite: data['isFavorite'] ?? false,
+    stock: data['stock'] ?? 0,
+  );
+}
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -38,7 +66,8 @@ class Product {
       'description': description,
       'price': price,
       'imageUrl': imageUrl,
-      'category': category,
+      'category': category.toJson(),
+      'subCategory': subCategory.toJson(),
       'availableSizes': availableSizes,
       'availableColors': availableColors,
       'bonusPoints': bonusPoints,
@@ -58,6 +87,7 @@ class Product {
       price: json['price'],
       imageUrl: json['imageUrl'],
       category: json['category'],
+      subCategory: json['category'],
       availableSizes: List<String>.from(json['availableSizes']),
       availableColors: List<String>.from(json['availableColors']),
       bonusPoints: json['bonusPoints'],

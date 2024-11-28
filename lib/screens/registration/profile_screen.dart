@@ -19,10 +19,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _getProfile();
   }
 
-  void _getProfile() {
-    final String uid = context.read<AuthBloc>().state.user!.uid;
-    print('uid: $uid');
-    context.read<ProfileCubit>().getProfile(uid: uid);
+ void _getProfile() {
+    final authState = context.read<AuthBloc>().state;
+    
+    if (authState.user != null) {
+      final String uid = authState.user!.uid;
+      print('uid: $uid');
+      context.read<ProfileCubit>().getProfile(uid: uid);
+    } else {
+      print('No user logged in');
+    }
   }
 
   @override

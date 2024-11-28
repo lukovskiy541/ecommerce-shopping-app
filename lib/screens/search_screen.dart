@@ -84,43 +84,48 @@ class _SearchScreenState extends State<SearchScreen> {
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Stack(children: [
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/shopping_type.png'),
-                        fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () {
+                  
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Stack(children: [
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/shopping_type.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 40.0,
-                    child: Text(
-                      'Каталог',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Positioned(
+                      left: 16.0,
+                      bottom: 40.0,
+                      child: Text(
+                        'Каталог',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 16.0,
-                    child: Text(
-                      'всі товари',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
+                    Positioned(
+                      left: 16.0,
+                      bottom: 16.0,
+                      child: Text(
+                        'всі товари',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
