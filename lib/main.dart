@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
-import 'package:ecommerce_app/blocs/categories/categories_bloc.dart';
+import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
 import 'package:ecommerce_app/blocs/signup/signup_cubit.dart';
+import 'package:ecommerce_app/models/category_model.dart';
+import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
-import 'package:ecommerce_app/repositories/categories_repository.dart';
+import 'package:ecommerce_app/repositories/genders_repository.dart';
 import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
 import 'package:ecommerce_app/screens/bucket_screen.dart';
@@ -31,8 +33,92 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  
   runApp(const MyApp());
+}
+
+Future<void> createProductsCollection() async {
+  final CollectionReference productsRef =
+      FirebaseFirestore.instance.collection('products');
+
+  final Category sandalsCategory = Category(
+    id: 'sandals-category-id',
+    name: 'Босоніжки',
+    imageUrl: 'category-image-url',
+    subCategories: [
+      SubCategory(
+        id: 'casual-sandals-id',
+        name: 'Кежуал босоніжки',
+        imageUrl: 'subcategory-image-url',
+      ),
+      SubCategory(
+        id: 'elegant-sandals-id',
+        name: 'Елегантні босоніжки',
+        imageUrl: 'subcategory-image-url',
+      ),
+    ],
+  );
+
+  final Gender femaleGender = Gender(
+    id: 'female-id',
+    name: 'Жінки',
+    productTypes: [
+      ProductType(
+        id: 'footwear-id',
+        name: 'Взуття',
+        imageUrl: 'gender-image-url',
+        categories: [sandalsCategory],
+      ),
+    ],
+  );
+
+  final List<Product> products = [
+    Product(
+      id: '1',
+      name: 'Чорні елегантні босоніжки',
+      description: 'Чудові босоніжки для будь-якої події.',
+      price: 1500.0,
+      imageUrl: 'https://example.com/black-sandals.jpg',
+      category: sandalsCategory,
+      subCategory: sandalsCategory.subCategories.first,
+      availableSizes: ['36', '37', '38', '39', '40'],
+      availableColors: ['Чорний'],
+      bonusPoints: 10,
+      bonusPointsForSubscribers: 20,
+      brand: 'ElegantWear',
+      seller: 'BestShoesSeller',
+      gender: femaleGender,
+      productType: femaleGender.productTypes.first,
+      stock: 25,
+    ),
+    Product(
+      id: '2',
+      name: 'Кежуал босоніжки',
+      description: 'Зручні босоніжки на щодень.',
+      price: 1200.0,
+      imageUrl: 'https://example.com/casual-sandals.jpg',
+      category: sandalsCategory,
+      subCategory: sandalsCategory.subCategories.last,
+      availableSizes: ['37', '38', '39', '40', '41'],
+      availableColors: ['Бежевий', 'Коричневий'],
+      bonusPoints: 15,
+      bonusPointsForSubscribers: 25,
+      brand: 'ComfortLine',
+      seller: 'EverydayStyle',
+      gender: femaleGender,
+      productType: femaleGender.productTypes.first,
+      stock: 30,
+    ),
+  ];
+
+  try {
+    for (final product in products) {
+      await productsRef.doc(product.id).set(product.toFirestore());
+    }
+    print('Колекція продуктів успішно створена.');
+  } catch (e) {
+    print('Помилка при створенні продуктів: $e');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +126,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(
@@ -58,8 +143,8 @@ class MyApp extends StatelessWidget {
             firebaseFirestore: FirebaseFirestore.instance,
           ),
         ),
-        RepositoryProvider<CategoriesRepository>(
-          create: (context) => CategoriesRepository(
+        RepositoryProvider<GendersRepository>(
+          create: (context) => GendersRepository(
             firebaseFirestore: FirebaseFirestore.instance,
           ),
         ),
@@ -100,9 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
     LikedScreen(),
     ShopsScreen()
   ];
-
-
-
 
   void _onItemTapped(int index) {
     setState(() {

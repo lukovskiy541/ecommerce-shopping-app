@@ -18,6 +18,8 @@ class Product {
   final String seller;
   final bool isFavorite;
   final int stock;
+  final Gender gender;
+  final ProductType productType;
 
   Product({
     required this.id,
@@ -34,6 +36,8 @@ class Product {
     required this.brand,
     required this.seller,
     this.isFavorite = false,
+    required this.gender,
+    required this.productType,
     this.stock = 0,
   });
 
@@ -41,13 +45,10 @@ class Product {
     Map<String, dynamic> data;
     String id;
 
-    // Explicitly handle different input types
     if (doc is DocumentSnapshot) {
-      // If it's a DocumentSnapshot, extract data and ID
       data = doc.data() as Map<String, dynamic>;
       id = doc.id;
     } else if (doc is Map<String, dynamic>) {
-      // If it's a direct Map, use it as-is
       data = doc;
       id = data['id'] ?? '';
     } else {
@@ -55,7 +56,6 @@ class Product {
           'Invalid input type for Product.fromFirestore. Expected DocumentSnapshot or Map<String, dynamic>.');
     }
 
-    // Safely handle category and subCategory parsing
     Category category = data['category'] is Map<String, dynamic>
         ? Category.fromJson(data['category'])
         : Category.fromFirestore(data['category']);
@@ -63,6 +63,14 @@ class Product {
     SubCategory subCategory = data['subCategory'] is Map<String, dynamic>
         ? SubCategory.fromJson(data['subCategory'])
         : SubCategory.fromFirestore(data['subCategory']);
+
+     Gender gender = data['gender'] is Map<String, dynamic>
+        ? Gender.fromJson(data['gender'])
+        : Gender.fromFirestore(data['gender']);
+
+    ProductType productType = data['productType'] is Map<String, dynamic>
+        ? ProductType.fromJson(data['productType'])
+        : ProductType.fromFirestore(data['productType']);
 
     return Product(
       id: id,
@@ -80,6 +88,8 @@ class Product {
       seller: data['seller'] ?? '',
       isFavorite: data['isFavorite'] ?? false,
       stock: data['stock'] ?? 0,
+      gender: gender,
+      productType: productType,
     );
   }
 
@@ -89,9 +99,11 @@ class Product {
       'description': description,
       'price': price,
       'imageUrl': imageUrl,
-      'category': category.toJson(), // Ensure category is converted to JSON
+      'category': category.toJson(),
       'subCategory':
-          subCategory.toJson(), // Ensure subCategory is converted to JSON
+          subCategory.toJson(),
+          'gender': gender.toJson(),
+      'productType': productType.toJson(),
       'availableSizes': availableSizes,
       'availableColors': availableColors,
       'bonusPoints': bonusPoints,
@@ -112,6 +124,8 @@ class Product {
       'imageUrl': imageUrl,
       'category': category.toJson(),
       'subCategory': subCategory.toJson(),
+      'gender': gender.toJson(),
+      'productType': productType.toJson(),
       'availableSizes': availableSizes,
       'availableColors': availableColors,
       'bonusPoints': bonusPoints,
@@ -126,7 +140,8 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     Category category = Category.fromJson(json['category']);
     SubCategory subCategory = SubCategory.fromJson(json['subCategory']);
-
+    Gender gender = Gender.fromJson(json['gender']);
+    ProductType productType = ProductType.fromJson(json['productType']);
     return Product(
       id: json['id'],
       name: json['name'],
@@ -135,6 +150,8 @@ class Product {
       imageUrl: json['imageUrl'],
       category: category,
       subCategory: subCategory,
+      gender: gender,
+      productType: productType,
       availableSizes: List<String>.from(json['availableSizes']),
       availableColors: List<String>.from(json['availableColors']),
       bonusPoints: json['bonusPoints'],

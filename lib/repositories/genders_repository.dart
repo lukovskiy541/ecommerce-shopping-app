@@ -2,21 +2,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/models/category_model.dart';
 
-
-
-class CategoriesRepository {
+class GendersRepository {
   final FirebaseFirestore firebaseFirestore;
 
-  CategoriesRepository({
+  GendersRepository({
     required this.firebaseFirestore,
   });
 
- 
-  Future<List<Category>> getCategories() async {
+  Future<List<Gender>> getGenders() async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('categories').get();
+        await FirebaseFirestore.instance.collection('genders').get();
 
-    return snapshot.docs.map((doc) => Category.fromFirestore(doc)).toList();
+    return snapshot.docs.map((doc) => Gender.fromFirestore(doc)).toList();
   }
-
 }
