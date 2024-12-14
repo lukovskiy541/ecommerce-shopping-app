@@ -1,5 +1,6 @@
-
+import 'package:ecommerce_app/blocs/categories/categories_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -85,48 +86,50 @@ class _SearchScreenState extends State<SearchScreen> {
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/catalog');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Stack(children: [
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/shopping_type.png'),
-                          fit: BoxFit.cover,
+       
+                 GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/catalog');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Stack(children: [
+                        Container(
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/shopping_type.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 16.0,
-                      bottom: 40.0,
-                      child: Text(
-                        'Каталог',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        Positioned(
+                          left: 16.0,
+                          bottom: 40.0,
+                          child: Text(
+                            'Каталог',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 16.0,
-                      bottom: 16.0,
-                      child: Text(
-                        'всі товари',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+                        Positioned(
+                          left: 16.0,
+                          bottom: 16.0,
+                          child: Text(
+                            'всі товари',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
+                      ]),
                     ),
-                  ]),
-                ),
+                  
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),

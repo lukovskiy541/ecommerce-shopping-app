@@ -1,8 +1,8 @@
 import 'package:ecommerce_app/blocs/categories/categories_bloc.dart';
-import 'package:ecommerce_app/main.dart';
-import 'package:ecommerce_app/screens/catalog/tabs.dart';
+import 'package:ecommerce_app/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecommerce_app/repositories/categories_repository.dart';
 
 class CatalogScreen extends StatefulWidget {
   static const String routeName = '/catalog';
@@ -15,13 +15,30 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
+  List<Category> _categories = [];
+  bool _isLoading = false;
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _tabController = TabController(
-      length: context.watch<CategoriesBloc>().state.categories.length, 
-      vsync: this
-    );
+  void initState() {
+    super.initState();
+    _initTabs();
+  }
+
+  void _initTabs() async {
+    await _initializeTabController();
+  }
+
+  Future<void> _initializeTabController() async {
+    final categories =
+        await context.read<CategoriesRepository>().getCategories();
+    print('success loaded');
+    setState(() {
+      _categories = categories;
+      _tabController = TabController(
+        length: _categories.length,
+        vsync: this,
+      );
+    });
   }
 
   @override
@@ -32,31 +49,30 @@ class _CatalogScreenState extends State<CatalogScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoriesBloc, CategoriesState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-          ),
-          extendBodyBehindAppBar: true,
-          body: Column(
-            children: [
-             
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: context
-                      .watch<CategoriesBloc>()
-                      .state
-                      .categories
-                      .map((category) => Text(category.name, style: TextStyle(color: Colors.black),))
-                      .toList(),
-                ),
-              )
-            ],
-          ),
-        );
-      },
+    print('categories len: ${_categories.length}');
+    if (_categories.length == 0) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    } else
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
+      extendBodyBehindAppBar: true,
+      body: Column(
+        children: [
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: _categories
+                  .map((category) => Text(
+                        category.name,
+                        style: TextStyle(color: Colors.black),
+                      ))
+                  .toList(),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
