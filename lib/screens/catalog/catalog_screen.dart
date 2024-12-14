@@ -54,19 +54,32 @@ class _CatalogScreenState extends State<CatalogScreen>
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: ThemeData().primaryColor,),
+    
       body: Column(
         children: [
+          TabBar.secondary(
+            tabAlignment: TabAlignment.start,
+            isScrollable: true,
+          indicatorPadding: EdgeInsets.zero,
+          controller: _tabController,
+          padding: EdgeInsets.zero,
+          tabs: _categories
+                  .map((category) => Tab(
+                        text: category.name,
+                        
+                      ))
+                  .toList() ,
+          
+        ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
+              
               children: _categories
-                  .map((category) => Text(
-                        category.name,
-                        style: TextStyle(color: Colors.black),
+                  .map((category) => Tab(
+                        text: category.name,
+                        
                       ))
                   .toList(),
             ),

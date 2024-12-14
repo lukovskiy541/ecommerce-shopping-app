@@ -21,17 +21,18 @@ class Category {
       'imageUrl': imageUrl
     };
   }
-  
+
   factory Category.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     List<SubCategory> subCategories = [];
-    if (data['subCategories'] != null) {
+    if (data['subCategories'] != null &&
+        (data['subCategories'] as List).length != 0) {
       subCategories = (data['subCategories'] as List)
           .map((subCategoryData) => SubCategory.fromMap(subCategoryData))
           .toList();
-    }
-
+    } else
+      subCategories = [];
     return Category(
       id: doc.id,
       name: data['name'] ?? '',
@@ -67,9 +68,8 @@ class SubCategory {
 
   factory SubCategory.fromFirestore(dynamic data) {
     // Handle both Map and DocumentSnapshot inputs
-    Map<String, dynamic> mapData = data is DocumentSnapshot 
-        ? data.data() as Map<String, dynamic>
-        : data;
+    Map<String, dynamic> mapData =
+        data is DocumentSnapshot ? data.data() as Map<String, dynamic> : data;
 
     return SubCategory(
       id: mapData['id'] ?? '',
