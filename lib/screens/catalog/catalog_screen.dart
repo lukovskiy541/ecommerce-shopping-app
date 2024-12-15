@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/models/category_model.dart';
-import 'package:ecommerce_app/screens/catalog/catalog_gender_screen.dart';
+import 'package:ecommerce_app/screens/catalog/catalog_categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_app/repositories/genders_repository.dart';

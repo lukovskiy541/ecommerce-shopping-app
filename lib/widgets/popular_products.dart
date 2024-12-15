@@ -1,7 +1,6 @@
-import 'package:ecommerce_app/widgets/product.dart';
+import 'package:ecommerce_app/widgets/product_for_you.dart';
 import 'package:ecommerce_app/widgets/product_type.dart';
 import 'package:flutter/material.dart';
-
 
 class PopularProducts extends StatelessWidget {
   const PopularProducts({super.key});
@@ -29,7 +28,10 @@ class PopularProducts extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: ProductItem(size: 250, canBeFavorite: true,),
+                child: ProductItemFromForYou(
+                  size: 250,
+                  canBeFavorite: true,
+                ),
               );
             },
           ),

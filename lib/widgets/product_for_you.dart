@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItemFromForYou extends StatelessWidget {
   final int size;
   final bool canBeFavorite;
-  const ProductItem({super.key, required this.size, required this.canBeFavorite});
+  const ProductItemFromForYou(
+      {super.key, required this.size, required this.canBeFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ProductItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (canBeFavorite) 
+          if (canBeFavorite)
             Stack(
               children: [
                 Image.asset('assets/shoe.jpg'),
@@ -22,16 +23,14 @@ class ProductItem extends StatelessWidget {
                   top: 1,
                   right: 5,
                   child: IconButton(
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.favorite_border),
                   ),
                 ),
               ],
             )
-          else 
+          else
             Image.asset('assets/shoe.jpg'),
-          
           Text(
             '\$4 599',
             style: TextStyle(fontWeight: FontWeight.bold),
