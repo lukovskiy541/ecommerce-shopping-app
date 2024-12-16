@@ -9,8 +9,8 @@ class ProductItem extends StatelessWidget {
   const ProductItem({super.key, required this.product});
 
   void _imageClicked(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductPage(product: product,)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductPage(product: product)));
   }
 
   @override
@@ -61,13 +61,24 @@ class ProductItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      for (var size in product.availableSizes)
+                      for (int i = 0;
+                          i < product.availableSizes.length && i < 5;
+                          i++)
                         Padding(
                           padding: const EdgeInsets.only(right: 7),
                           child: Container(
                             width: 20,
                             height: 15,
-                            child: Text(size),
+                            child: Text(product.availableSizes[i]),
+                          ),
+                        ),
+                      if (product.availableSizes.length > 5)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: Container(
+                            width: 20,
+                            height: 15,
+                            child: Text('...'),
                           ),
                         ),
                     ],

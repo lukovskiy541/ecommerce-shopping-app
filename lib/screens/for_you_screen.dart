@@ -2,6 +2,7 @@ import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:ecommerce_app/widgets/popular_products.dart';
 import 'package:ecommerce_app/widgets/products_of_day.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class ForYouScreen extends StatelessWidget {
   const ForYouScreen({super.key});
@@ -42,8 +43,11 @@ class ForYouScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 16),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, ProfileScreen.routeName);
+                              pushScreen(
+                                context,
+                                screen: ProfileScreen(),
+                                withNavBar: true,
+                              );
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[200],
@@ -260,7 +264,6 @@ class ForYouScreen extends StatelessWidget {
                   );
                 },
               ),
-              
             ),
           ]),
         ),

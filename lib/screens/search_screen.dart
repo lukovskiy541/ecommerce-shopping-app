@@ -1,6 +1,8 @@
-import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
+
+import 'package:ecommerce_app/screens/catalog/catalog_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -89,7 +91,11 @@ class _SearchScreenState extends State<SearchScreen> {
        
                  GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/catalog');
+                       pushScreen(
+                                context,
+                                screen: CatalogScreen(),
+                                withNavBar: true,
+                              );
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 15.0),

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce_app/models/product_model.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../models/custom_error.dart';
@@ -30,4 +31,25 @@ class ProfileCubit extends Cubit<ProfileState> {
       ));
     }
   }
+
+  Future<void> addFavorite({required Product product}) async {
+  emit(state.copyWith(profileStatus: ProfileStatus.loading));
+
+  try {
+    final updatedUser = await profileRepository.addFavoriteProduct(
+      user: state.user,
+      product: product,
+    );
+
+    emit(state.copyWith(
+      profileStatus: ProfileStatus.loaded,
+      user: updatedUser,
+    ));
+  } on CustomError catch (e) {
+    emit(state.copyWith(
+      profileStatus: ProfileStatus.error,
+      error: e,
+    ));
+  }
+}
 }

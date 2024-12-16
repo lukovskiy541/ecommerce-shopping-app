@@ -38,10 +38,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
-
   }
-
-
 
   @override
   void dispose() {
@@ -55,13 +52,13 @@ class _LoginFormState extends State<LoginForm> {
     return BlocConsumer<SigninCubit, SigninState>(
       listener: (context, state) async {
         if (state.signinStatus == SigninStatus.error) {
-            await errorDialog(context, state.error);
-          }
+          await errorDialog(context, state.error);
+        }
 
-          if (state.signinStatus == SigninStatus.success) {
-           Navigator.of(context).pushNamedAndRemoveUntil(
-            ProfileScreen.routeName,
-            ModalRoute.withName('/'),
+        if (state.signinStatus == SigninStatus.success) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => ProfileScreen()),
+            (route) => false,
           );
         }
       },
@@ -89,8 +86,8 @@ class _LoginFormState extends State<LoginForm> {
                         return 'Будь ласка, введіть пошту';
                       }
                       if (!isEmail(value.trim())) {
-                          return 'Введіть правильну пошту.';
-                        }
+                        return 'Введіть правильну пошту.';
+                      }
                       return null;
                     },
                     onSaved: (String? value) {
@@ -138,18 +135,22 @@ class _LoginFormState extends State<LoginForm> {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: state.signinStatus == SigninStatus.submiting ? null : () {
-                    if (_formKey.currentState!.validate()) {
-                      TextInput.finishAutofillContext();
-                    }
+                  onPressed: state.signinStatus == SigninStatus.submiting
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            TextInput.finishAutofillContext();
+                          }
 
-                    _submit();
-                  },
+                          _submit();
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
                   ),
-                  child: Text(state.signinStatus == SigninStatus.submiting ? 'Завантаження...' : 'Увійти'),
+                  child: Text(state.signinStatus == SigninStatus.submiting
+                      ? 'Завантаження...'
+                      : 'Увійти'),
                 ),
               ],
             ),

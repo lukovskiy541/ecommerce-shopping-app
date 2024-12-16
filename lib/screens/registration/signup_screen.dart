@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/widgets/signup_form.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = '/signup';
@@ -19,7 +21,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/profile');
+                pushReplacementWithNavBar(
+                  context,
+                   MaterialPageRoute(builder: (_) => ProfileScreen()),
+                );
               },
               child: Text(
                 'Закрити',
@@ -78,7 +83,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // phone or email
             ),
             SignUpForm(),
-            
           ],
         ),
       ),

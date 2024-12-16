@@ -1,7 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/constants/db_constants.dart';
 import 'package:ecommerce_app/models/custom_error.dart';
+import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
 
 class ProfileRepository {
@@ -9,6 +9,24 @@ class ProfileRepository {
   const ProfileRepository({
     required this.firebaseFirestore,
   });
+
+  Future<User> addFavoriteProduct({
+    required User user,
+    required Product product,
+  }) async {
+    try {
+      final updatedFavoriteProducts = List<String>.from(user.favoriteProducts);
+      updatedFavoriteProducts.add(product.id);
+
+      await firebaseFirestore.collection('users').doc(user.id).update({
+        'favoriteProducts': updatedFavoriteProducts,
+      });
+
+      return user.copyWith(favoriteProducts: updatedFavoriteProducts);
+    } catch (e) {
+      throw CustomError(message: 'Failed to add favorite product');
+    }
+  }
 
   Future<User> getProfile({required String uid}) async {
     try {

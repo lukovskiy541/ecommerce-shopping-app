@@ -1,7 +1,10 @@
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
+import 'package:ecommerce_app/screens/for_you_screen.dart';
+import 'package:ecommerce_app/screens/registration/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
@@ -47,7 +50,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: widget.showBackButton
                   ? IconButton(
                       icon: Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () =>  Navigator.of(context).pushAndRemoveUntil(
+  MaterialPageRoute(builder: (_) => ForYouScreen()),
+  (route) => false, 
+),
                     )
                   : null,
               centerTitle: true,
@@ -73,7 +79,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 100,
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, '/signin');
+                        pushScreen(
+                                context,
+                                screen: SignInScreen(),
+                                withNavBar: true,
+                              );
                       },
                     ),
                   if (state.authStatus == AuthStatus.authenticated)

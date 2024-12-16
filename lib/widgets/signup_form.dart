@@ -75,10 +75,10 @@ class _SignUpFormState extends State<SignUpForm> {
           await errorDialog(context, state.error);
         }
         if (state.signupStatus == SignupStatus.success) {
-           Navigator.of(context).pushNamedAndRemoveUntil(
-            ProfileScreen.routeName,
-            ModalRoute.withName('/'),
-          );
+           Navigator.of(context, rootNavigator: false).pushAndRemoveUntil(
+  MaterialPageRoute(builder: (context) => ProfileScreen()),
+  (route) => false, 
+);
         }
       },
       builder: (context, state) {

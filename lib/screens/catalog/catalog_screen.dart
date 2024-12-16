@@ -1,11 +1,10 @@
-import 'dart:typed_data';
 
-import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/models/category_model.dart';
 import 'package:ecommerce_app/screens/catalog/catalog_categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_app/repositories/genders_repository.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CatalogScreen extends StatefulWidget {
   static const String routeName = '/catalog';
@@ -19,7 +18,7 @@ class _CatalogScreenState extends State<CatalogScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
   List<Gender> _genders = [];
-  bool _isLoading = false;
+
 
   @override
   void initState() {
@@ -86,13 +85,12 @@ class _CatalogScreenState extends State<CatalogScreen>
                             itemBuilder: (context, int index) =>
                                 GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CatalogCategoryScreen(
-                                                productType:gender.productTypes[index]
-                                                    )));
+                                pushScreen(
+                                context,
+                                screen: CatalogCategoryScreen(productType:gender.productTypes[index]),
+                                withNavBar: true,
+                              );
+                               
                               },
                               child: Container(
                                 height: 150,

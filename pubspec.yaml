@@ -44,6 +44,7 @@ dependencies:
   string_to_color: ^2.0.0
   faker: ^2.2.0
   http: ^1.2.2
+  persistent_bottom_nav_bar_v2: ^5.3.1
  
 
 

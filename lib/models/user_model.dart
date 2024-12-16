@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_app/models/review_model.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:ecommerce_app/models/review_model.dart';
 
 class User extends Equatable {
   final String id;
@@ -186,6 +187,56 @@ class User extends Equatable {
   @override
   String toString() {
     return 'User{id=$id, email=$email, name=$name, surname=$surname, patronymic=$patronymic, sex=$sex, birthday=$birthday, phone=$phone, bonusPoints=$bonusPoints, cardLevel=$cardLevel, hasSubscription=$hasSubscription, addresses=$addresses, shoeSize=$shoeSize, clothingSize=$clothingSize, favoriteCategories=$favoriteCategories, favoriteProducts=$favoriteProducts, orderHistory=$orderHistory, reviews=$reviews, preferredLanguage=$preferredLanguage, notificationSettings=$notificationSettings, createdAt=$createdAt, lastLogin=$lastLogin}';
+  }
+
+  User copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? surname,
+    String? patronymic,
+    bool? sex,
+    DateTime? birthday,
+    String? phone,
+    int? bonusPoints,
+    String? cardLevel,
+    bool? hasSubscription,
+    List<DeliveryAddress>? addresses,
+    String? shoeSize,
+    String? clothingSize,
+    List<String>? favoriteCategories,
+    List<String>? favoriteProducts,
+    List<dynamic>? orderHistory,
+    List<Review>? reviews,
+    String? preferredLanguage,
+    NotificationSettings? notificationSettings,
+    DateTime? createdAt,
+    DateTime? lastLogin,
+  }) {
+    return User(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      surname: surname ?? this.surname,
+      patronymic: patronymic ?? this.patronymic,
+      sex: sex ?? this.sex,
+      birthday: birthday ?? this.birthday,
+      phone: phone ?? this.phone,
+      bonusPoints: bonusPoints ?? this.bonusPoints,
+      cardLevel: cardLevel ?? this.cardLevel,
+      hasSubscription: hasSubscription ?? this.hasSubscription,
+      addresses: addresses ?? this.addresses,
+      shoeSize: shoeSize ?? this.shoeSize,
+      clothingSize: clothingSize ?? this.clothingSize,
+      favoriteCategories: favoriteCategories ?? this.favoriteCategories,
+      favoriteProducts: favoriteProducts ?? this.favoriteProducts,
+      orderHistory: orderHistory ?? this.orderHistory,
+      reviews: reviews ?? this.reviews,
+      preferredLanguage: preferredLanguage ?? this.preferredLanguage,
+      notificationSettings: notificationSettings ?? this.notificationSettings,
+      createdAt: createdAt ?? this.createdAt,
+      lastLogin: lastLogin ?? this.lastLogin,
+    );
   }
 }
 
