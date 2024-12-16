@@ -27,14 +27,95 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'screens/catalog/catalog_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:faker/faker.dart';
+import 'dart:convert';
+import 'dart:math';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+ 
   runApp(const MyApp());
+}
+
+Future<void> createTestProducts({required String pexelsApiKey}) async {
+  final CollectionReference productsRef =
+      FirebaseFirestore.instance.collection('products');
+
+  // Faker для генерації текстових даних
+  final Faker faker = Faker();
+  final Random random = Random();
+
+  // Запит до Pexels API для отримання зображень
+  Future<List<String>> fetchImages(String query, int count) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://api.pexels.com/v1/search?query=$query&per_page=$count'),
+      headers: {'Authorization': pexelsApiKey},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List<String>.from(
+          data['photos'].map((photo) => photo['src']['medium']));
+    } else {
+      throw Exception('Failed to fetch images');
+    }
+  }
+
+  try {
+    // Отримуємо зображення для взуття
+    final List<String> images = await fetchImages('sandals', 10);
+
+    // Створюємо продукти
+    final List<Map<String, dynamic>> dummyProducts = List.generate(5, (index) {
+      final categoryName = faker.food.cuisine();
+      final subCategoryName = faker.food.dish();
+      return {
+        'id': faker.guid.guid(),
+        'name': faker.lorem.words(3).join(' '),
+        'description': faker.lorem.sentence(),
+        'price': (random.nextDouble() * 2000).toStringAsFixed(2),
+        'images': [images[random.nextInt(images.length)]],
+        'category': {
+          'id': faker.guid.guid(),
+          'name': categoryName,
+        },
+        'subCategory': {
+          'id': faker.guid.guid(),
+          'name': subCategoryName,
+        },
+        'availableSizes': ['36', '37', '38', '39', '40'],
+        'availableColors': ['Чорний', 'Білий', 'Сірий'],
+        'bonusPoints': random.nextInt(20),
+        'bonusPointsForSubscribers': random.nextInt(40),
+        'brand': faker.company.name(),
+        'seller': faker.person.name(),
+        'stock': random.nextInt(50),
+        'isFavorite': random.nextBool(),
+        'gender': {
+          'id': faker.guid.guid(),
+          'name': random.nextBool() ? 'Жінки' : 'Чоловіки',
+        },
+        'productType': {
+          'id': faker.guid.guid(),
+          'name': 'Взуття',
+        },
+      };
+    });
+
+    // Додаємо продукти до Firestore
+    for (final product in dummyProducts) {
+      await productsRef.doc(product['id']).set(product);
+    }
+
+    print('Продукти успішно створені!');
+  } catch (e) {
+    print('Помилка під час створення продуктів: $e');
+  }
 }
 
 Future<void> createProductsCollection() async {
@@ -78,7 +159,11 @@ Future<void> createProductsCollection() async {
       name: 'Чорні елегантні босоніжки',
       description: 'Чудові босоніжки для будь-якої події.',
       price: 1500.0,
-      imageUrl: 'https://example.com/black-sandals.jpg',
+      images: [
+        'https://example.com/casual-sandals.jpg',
+        'https://example.com/casual-sandals.jpg',
+        'https://example.com/casual-sandals.jpg'
+      ],
       category: sandalsCategory,
       subCategory: sandalsCategory.subCategories.first,
       availableSizes: ['36', '37', '38', '39', '40'],
@@ -96,7 +181,11 @@ Future<void> createProductsCollection() async {
       name: 'Кежуал босоніжки',
       description: 'Зручні босоніжки на щодень.',
       price: 1200.0,
-      imageUrl: 'https://example.com/casual-sandals.jpg',
+      images: [
+        'https://example.com/casual-sandals.jpg',
+        'https://example.com/casual-sandals.jpg',
+        'https://example.com/casual-sandals.jpg'
+      ],
       category: sandalsCategory,
       subCategory: sandalsCategory.subCategories.last,
       availableSizes: ['37', '38', '39', '40', '41'],

@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/models/product_model.dart';
+import 'package:ecommerce_app/screens/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:string_to_color/string_to_color.dart';
 
@@ -6,6 +7,11 @@ class ProductItem extends StatelessWidget {
   final Product product;
 
   const ProductItem({super.key, required this.product});
+
+  void _imageClicked(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductPage(product: product,)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +22,12 @@ class ProductItem extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.asset(
-                'assets/shoe.jpg',
-                fit: BoxFit.cover,
+              InkWell(
+                onTap: () => _imageClicked(context),
+                child: Image.network(
+                  product.images[0],
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
                 top: 1,
@@ -30,48 +39,54 @@ class ProductItem extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '\$${product.price}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(product.brand),
-                Text(
-                  product.category.name,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Row(
-                  children: [
-                    for (var size in product.availableSizes)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7),
-                        child: Container(
-                          width: 15,
-                          height: 15,
-                          child: Text(size),
+          InkWell(
+            onTap: () => _imageClicked(context),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '\$${product.price}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Text(product.brand),
+                  Text(
+                    product.category.name,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      for (var size in product.availableSizes)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: Container(
+                            width: 20,
+                            height: 15,
+                            child: Text(size),
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    for (var color in product.availableColors)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 7),
-                        child: Container(
-                          width: 15,
-                          height: 15,
-                          color: ColorUtils.stringToColor(color),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      for (var color in product.availableColors)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 7, top: 10),
+                          child: Container(
+                            width: 15,
+                            height: 15,
+                            color: ColorUtils.stringToColor(color),
+                          ),
                         ),
-                      ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

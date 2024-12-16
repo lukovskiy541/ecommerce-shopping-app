@@ -42,6 +42,8 @@ dependencies:
   equatable: ^2.0.7
   validators: ^3.0.0
   string_to_color: ^2.0.0
+  faker: ^2.2.0
+  http: ^1.2.2
  
 
 

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:ecommerce_app/models/category_model.dart';
 
 class Product {
@@ -7,7 +6,7 @@ class Product {
   final String name;
   final String description;
   final double price;
-  final String imageUrl;
+  final List<String> images;
   final Category category;
   final SubCategory subCategory;
   final List<String> availableSizes;
@@ -26,7 +25,7 @@ class Product {
     required this.name,
     required this.description,
     required this.price,
-    required this.imageUrl,
+    required this.images,
     required this.category,
     required this.subCategory,
     required this.availableSizes,
@@ -64,7 +63,7 @@ class Product {
         ? SubCategory.fromJson(data['subCategory'])
         : SubCategory.fromFirestore(data['subCategory']);
 
-     Gender gender = data['gender'] is Map<String, dynamic>
+    Gender gender = data['gender'] is Map<String, dynamic>
         ? Gender.fromJson(data['gender'])
         : Gender.fromFirestore(data['gender']);
 
@@ -77,7 +76,7 @@ class Product {
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       price: (data['price'] ?? 0.0).toDouble(),
-      imageUrl: data['imageUrl'] ?? '',
+      images: List<String>.from(data['images'] ?? []),
       category: category,
       subCategory: subCategory,
       availableSizes: List<String>.from(data['availableSizes'] ?? []),
@@ -98,11 +97,10 @@ class Product {
       'name': name,
       'description': description,
       'price': price,
-      'imageUrl': imageUrl,
+      'images': images,
       'category': category.toJson(),
-      'subCategory':
-          subCategory.toJson(),
-          'gender': gender.toJson(),
+      'subCategory': subCategory.toJson(),
+      'gender': gender.toJson(),
       'productType': productType.toJson(),
       'availableSizes': availableSizes,
       'availableColors': availableColors,
@@ -121,7 +119,7 @@ class Product {
       'name': name,
       'description': description,
       'price': price,
-      'imageUrl': imageUrl,
+      'images': images,
       'category': category.toJson(),
       'subCategory': subCategory.toJson(),
       'gender': gender.toJson(),
@@ -147,7 +145,7 @@ class Product {
       name: json['name'],
       description: json['description'],
       price: json['price'],
-      imageUrl: json['imageUrl'],
+      images: List<String>.from(json['images']),
       category: category,
       subCategory: subCategory,
       gender: gender,

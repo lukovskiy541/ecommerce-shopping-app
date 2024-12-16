@@ -18,10 +18,17 @@ class _CatalogCategoryScreenState extends State<CatalogCategoryScreen>
   late final TabController _tabController;
   List<Product> _products = [];
   List<Product> _filteredProducts = [];
+  late final AnimationController _fadeController;
 
   @override
   void initState() {
     super.initState();
+    _fadeController = AnimationController(
+      duration: Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _fadeController.forward();
+
     _initTabs();
   }
 
@@ -66,6 +73,7 @@ class _CatalogCategoryScreenState extends State<CatalogCategoryScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -73,53 +81,52 @@ class _CatalogCategoryScreenState extends State<CatalogCategoryScreen>
   Widget build(BuildContext context) {
     print('Filtered products length: ${_filteredProducts.length}');
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-  children: [
-    Text(
-      widget.productType.name,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-    ),
-    Row(
-      children: [
-        Icon(Icons.woman),
-        Icon(Icons.woman),
-        Icon(Icons.woman),
-        Icon(Icons.woman),
-        Spacer(),
-        Icon(Icons.settings),
-      ],
-    ),
-    TabBar.secondary(
-      tabAlignment: TabAlignment.start,
-      isScrollable: true,
-      indicatorPadding: EdgeInsets.zero,
-      controller: _tabController,
-      padding: EdgeInsets.zero,
-      tabs: widget.productType.categories
-          .map((category) => Tab(
-                text: category.name,
-              ))
-          .toList(),
-    ),
-    Expanded(
-      child: GridView.builder(
-        itemCount: _filteredProducts.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          mainAxisExtent: 400
-          
-        ),
-        itemBuilder: (context, int index) {
-          return ProductItem(product: _filteredProducts[index]);
-        },
-      ),
-    ),
-  ],
-)
-    );
+        appBar: AppBar(),
+        body: Column(
+          children: [
+            Text(
+              widget.productType.name,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            ),
+            Row(
+              children: [
+                Icon(Icons.woman),
+                Icon(Icons.woman),
+                Icon(Icons.woman),
+                Icon(Icons.woman),
+                Spacer(),
+                Icon(Icons.settings),
+              ],
+            ),
+            TabBar.secondary(
+              tabAlignment: TabAlignment.start,
+              isScrollable: true,
+              indicatorPadding: EdgeInsets.zero,
+              controller: _tabController,
+              padding: EdgeInsets.zero,
+              tabs: widget.productType.categories
+                  .map((category) => Tab(
+                        text: category.name,
+                      ))
+                  .toList(),
+            ),
+            Expanded(
+              child: FadeTransition(
+                opacity: _fadeController,
+                child: GridView.builder(
+                  itemCount: _filteredProducts.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      mainAxisExtent: 450),
+                  itemBuilder: (context, int index) {
+                    return ProductItem(product: _filteredProducts[index]);
+                  },
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }
-
