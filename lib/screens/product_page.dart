@@ -2,9 +2,11 @@ import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/models/brand_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/brands_repository.dart';
+import 'package:ecommerce_app/screens/cart/cart_screen.dart';
 import 'package:ecommerce_app/widgets/carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -16,13 +18,15 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   List<Brand> _brands = [];
+  bool _inCart = false;
+  bool _sizeSelected = false;
   late PageController _pageController;
-
+  late ScrollController _scrollController;
   int _selectedButtonIndex = -1;
   @override
   void initState() {
     super.initState();
-
+    _scrollController = ScrollController();
     _pageController = PageController(initialPage: 0);
     _initializeBrands();
   }
@@ -30,6 +34,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void dispose() {
     _pageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -39,6 +44,29 @@ class _ProductPageState extends State<ProductPage> {
     setState(() {
       _brands = brands;
     });
+  }
+
+  void _showErrorMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          left: 10,
+          right: 10,
+          bottom: MediaQuery.of(context).size.height - 200,
+        ),
+        content: Text('Необхідно обрати розмір'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void _scrollToSizes() {
+    _scrollController.animateTo(
+      800,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -52,18 +80,71 @@ class _ProductPageState extends State<ProductPage> {
               IconButton(onPressed: () {}, icon: Icon(Icons.share)),
               IconButton(
                 onPressed: () {
-                  context.read<ProfileCubit>().addFavorite(product: widget.product);
+                  context
+                      .read<ProfileCubit>()
+                      .addFavorite(product: widget.product);
                 },
-                icon: state.user.favoriteProducts.contains(widget.product.name) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                icon: state.user.favoriteProducts.contains(widget.product.id)
+                    ? Icon(Icons.favorite)
+                    : Icon(Icons.favorite_border),
               ),
             ],
           ),
           extendBodyBehindAppBar: true,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: SizedBox(
+            width: 390,
+            height: 50,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                if (!_inCart) {
+                  if (_sizeSelected) {
+                    setState(() {
+                      _inCart = !_inCart;
+                    });
+                  } else {
+                    _showErrorMessage();
+                    _scrollToSizes();
+                  }
+                } else {
+                  pushScreen(context, screen: CartScreen());
+                }
+              },
+              label: Text(
+                _inCart ? 'Перейти до кошика' : 'Додати в кошик',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              backgroundColor: Colors.black,
+              elevation: 0,
+              highlightElevation: 0,
+            ),
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 children: [
-                  Carousel(product: widget.product),
+                  Stack(children: [
+                    Carousel(product: widget.product),
+                    if (_inCart)
+                      Positioned(
+                        bottom: 25,
+                        left: 5,
+                        child: Container(
+                          width: 100,
+                          height: 30,
+                          color: Colors.grey,
+                          child: Center(
+                              child: Text(
+                            'У кошику',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                        ),
+                      ),
+                  ]),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
@@ -113,6 +194,7 @@ class _ProductPageState extends State<ProductPage> {
                                   onPressed: () {
                                     setState(() {
                                       _selectedButtonIndex = index;
+                                      _sizeSelected = !_sizeSelected;
                                     });
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -225,10 +307,9 @@ class _ProductPageState extends State<ProductPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
-                                onPressed: () {
-
-                                },
-                                icon: Icon(Icons.favorite_border),),
+                              onPressed: () {},
+                              icon: Icon(Icons.favorite_border),
+                            ),
                             SizedBox(
                               width: 40,
                             ),

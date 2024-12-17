@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/models/cart_model.dart';
 import 'package:equatable/equatable.dart';
-
-import 'package:ecommerce_app/models/review_model.dart';
 
 class User extends Equatable {
   final String id;
@@ -13,6 +12,7 @@ class User extends Equatable {
   final bool sex;
   final DateTime birthday;
   final String phone;
+ 
 
   final int bonusPoints;
   final String cardLevel;
@@ -36,7 +36,7 @@ class User extends Equatable {
   final DateTime lastLogin;
 
   factory User.initial() {
-     return User(
+    return User(
       id: '',
       email: '',
       name: '',
@@ -45,22 +45,16 @@ class User extends Equatable {
       sex: false,
       birthday: DateTime.now(),
       phone: '',
-      
       bonusPoints: 0,
       cardLevel: 'Base',
       hasSubscription: false,
-      
       addresses: [],
-      
       shoeSize: null,
       clothingSize: null,
-      
       favoriteCategories: [],
       favoriteProducts: [],
-      
       orderHistory: [],
       reviews: [],
-      
       preferredLanguage: null,
       notificationSettings: NotificationSettings(
         pushEnabled: true,
@@ -68,7 +62,6 @@ class User extends Equatable {
         smsEnabled: true,
         topicSubscriptions: [],
       ),
-      
       createdAt: DateTime.now(),
       lastLogin: DateTime.now(),
     );
@@ -156,37 +149,72 @@ class User extends Equatable {
     required this.lastLogin,
   });
 
-  @override
-  List<Object> get props {
-    return [
-      id,
-      email,
-      name,
-      surname,
-      patronymic!,
-      sex,
-      birthday,
-      phone,
-      bonusPoints,
-      cardLevel,
-      hasSubscription,
-      addresses,
-      shoeSize!,
-      clothingSize!,
-      favoriteCategories,
-      favoriteProducts,
-      orderHistory,
-      reviews,
-      preferredLanguage!,
-      notificationSettings,
-      createdAt,
-      lastLogin,
-    ];
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      id: map['id'] ?? '',
+      email: map['email'] ?? '',
+      name: map['name'] ?? '',
+      surname: map['surname'] ?? '',
+      patronymic: map['patronymic'],
+      sex: map['sex'] ?? false,
+      birthday: (map['birthday'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      phone: map['phone'] ?? '',
+      bonusPoints: map['bonusPoints'] ?? 0,
+      cardLevel: map['cardLevel'] ?? 'Base',
+      hasSubscription: map['hasSubscription'] ?? false,
+      addresses: (map['addresses'] as List<dynamic>?)
+              ?.map((address) =>
+                  DeliveryAddress.fromMap(address as Map<String, dynamic>))
+              .toList() ??
+          [],
+      shoeSize: map['shoeSize'],
+      clothingSize: map['clothingSize'],
+      favoriteCategories: (map['favoriteCategories'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      favoriteProducts: (map['favoriteProducts'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      orderHistory: map['orderHistory'] ?? [],
+      reviews: (map['reviews'] as List<dynamic>?)
+              ?.map((review) => Review.fromMap(review as Map<String, dynamic>))
+              .toList() ??
+          [],
+      preferredLanguage: map['preferredLanguage'],
+      notificationSettings: NotificationSettings.fromMap(
+          map['notificationSettings'] as Map<String, dynamic>),
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      lastLogin: (map['lastLogin'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    );
   }
 
-  @override
-  String toString() {
-    return 'User{id=$id, email=$email, name=$name, surname=$surname, patronymic=$patronymic, sex=$sex, birthday=$birthday, phone=$phone, bonusPoints=$bonusPoints, cardLevel=$cardLevel, hasSubscription=$hasSubscription, addresses=$addresses, shoeSize=$shoeSize, clothingSize=$clothingSize, favoriteCategories=$favoriteCategories, favoriteProducts=$favoriteProducts, orderHistory=$orderHistory, reviews=$reviews, preferredLanguage=$preferredLanguage, notificationSettings=$notificationSettings, createdAt=$createdAt, lastLogin=$lastLogin}';
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'email': email,
+      'name': name,
+      'surname': surname,
+      'patronymic': patronymic,
+      'sex': sex,
+      'birthday': birthday,
+      'phone': phone,
+      'bonusPoints': bonusPoints,
+      'cardLevel': cardLevel,
+      'hasSubscription': hasSubscription,
+      'addresses': addresses.map((address) => address.toMap()).toList(),
+      'shoeSize': shoeSize,
+      'clothingSize': clothingSize,
+      'favoriteCategories': favoriteCategories,
+      'favoriteProducts': favoriteProducts,
+      'orderHistory': orderHistory,
+      'reviews': reviews.map((review) => review.toMap()).toList(),
+      'preferredLanguage': preferredLanguage,
+      'notificationSettings': notificationSettings.toMap(),
+      'createdAt': createdAt,
+      'lastLogin': lastLogin,
+    };
   }
 
   User copyWith({
@@ -238,6 +266,39 @@ class User extends Equatable {
       lastLogin: lastLogin ?? this.lastLogin,
     );
   }
+
+  @override
+  List<Object> get props {
+    return [
+      id,
+      email,
+      name,
+      surname,
+      patronymic!,
+      sex,
+      birthday,
+      phone,
+      bonusPoints,
+      cardLevel,
+      hasSubscription,
+      addresses,
+      shoeSize!,
+      clothingSize!,
+      favoriteCategories,
+      favoriteProducts,
+      orderHistory,
+      reviews,
+      preferredLanguage!,
+      notificationSettings,
+      createdAt,
+      lastLogin,
+    ];
+  }
+
+  @override
+  String toString() {
+    return 'User{id=$id, email=$email, name=$name, surname=$surname, patronymic=$patronymic, sex=$sex, birthday=$birthday, phone=$phone, bonusPoints=$bonusPoints, cardLevel=$cardLevel, hasSubscription=$hasSubscription, addresses=$addresses, shoeSize=$shoeSize, clothingSize=$clothingSize, favoriteCategories=$favoriteCategories, favoriteProducts=$favoriteProducts, orderHistory=$orderHistory, reviews=$reviews, preferredLanguage=$preferredLanguage, notificationSettings=$notificationSettings, createdAt=$createdAt, lastLogin=$lastLogin}';
+  }
 }
 
 class DeliveryAddress {
@@ -248,6 +309,7 @@ class DeliveryAddress {
   final String? apartment;
   final String? notes;
   final bool isDefault;
+
   DeliveryAddress({
     required this.id,
     required this.city,
@@ -257,6 +319,7 @@ class DeliveryAddress {
     this.notes,
     required this.isDefault,
   });
+
   factory DeliveryAddress.fromMap(Map<String, dynamic> map) {
     return DeliveryAddress(
       id: map['id'] ?? '',
@@ -268,6 +331,18 @@ class DeliveryAddress {
       isDefault: map['isDefault'] ?? false,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'city': city,
+      'street': street,
+      'house': house,
+      'apartment': apartment,
+      'notes': notes,
+      'isDefault': isDefault,
+    };
+  }
 }
 
 class NotificationSettings {
@@ -275,21 +350,62 @@ class NotificationSettings {
   final bool emailEnabled;
   final bool smsEnabled;
   final List<String> topicSubscriptions;
+
   NotificationSettings({
     required this.pushEnabled,
     required this.emailEnabled,
     required this.smsEnabled,
     required this.topicSubscriptions,
   });
+
   factory NotificationSettings.fromMap(Map<String, dynamic> map) {
     return NotificationSettings(
       pushEnabled: map['pushEnabled'] ?? true,
       emailEnabled: map['emailEnabled'] ?? true,
       smsEnabled: map['smsEnabled'] ?? true,
-      topicSubscriptions: (map['topicSubscriptions'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList() ??
-          [],
+      topicSubscriptions:
+          List<String>.from(map['topicSubscriptions'] ?? const []),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'pushEnabled': pushEnabled,
+      'emailEnabled': emailEnabled,
+      'smsEnabled': smsEnabled,
+      'topicSubscriptions': topicSubscriptions,
+    };
+  }
+}
+
+class Review {
+  final String userId;
+  final String productId;
+  final String reviewText;
+  final double rating;
+
+  Review({
+    required this.userId,
+    required this.productId,
+    required this.reviewText,
+    required this.rating,
+  });
+
+  factory Review.fromMap(Map<String, dynamic> map) {
+    return Review(
+      userId: map['userId'] ?? '',
+      productId: map['productId'] ?? '',
+      reviewText: map['reviewText'] ?? '',
+      rating: map['rating']?.toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'productId': productId,
+      'reviewText': reviewText,
+      'rating': rating,
+    };
   }
 }

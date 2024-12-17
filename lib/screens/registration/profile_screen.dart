@@ -22,9 +22,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _getProfile();
   }
 
- void _getProfile() {
+  void _getProfile() {
     final authState = context.read<AuthBloc>().state;
-    
+
     if (authState.user != null) {
       final String uid = authState.user!.uid;
       print('uid: $uid');
@@ -50,10 +50,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: widget.showBackButton
                   ? IconButton(
                       icon: Icon(Icons.arrow_back),
-                      onPressed: () =>  Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(builder: (_) => ForYouScreen()),
-  (route) => false, 
-),
+                      onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (_) => ForYouScreen()),
+                        (route) => false,
+                      ),
                     )
                   : null,
               centerTitle: true,
@@ -80,10 +80,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       onTap: () {
                         pushScreen(
-                                context,
-                                screen: SignInScreen(),
-                                withNavBar: true,
-                              );
+                          context,
+                          screen: SignInScreen(),
+                          withNavBar: true,
+                        );
                       },
                     ),
                   if (state.authStatus == AuthStatus.authenticated)

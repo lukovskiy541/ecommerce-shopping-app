@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_app/models/product_model.dart';
+import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fbAuth;
 
 import '../../models/custom_error.dart';
 import '../../models/user_model.dart';
@@ -10,10 +14,16 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepository profileRepository;
-
+  late final StreamSubscription authSubscription;
+  final AuthRepository authRepository;
   ProfileCubit({
     required this.profileRepository,
-  }) : super(ProfileState.initial());
+    required this.authRepository,
+  }) : super(ProfileState.initial()) {
+    authSubscription = authRepository.user.listen((fbAuth.User? user) {
+      getProfile(uid: user!.uid);
+    });
+  }
 
   Future<void> getProfile({required String uid}) async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
@@ -33,23 +43,23 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> addFavorite({required Product product}) async {
-  emit(state.copyWith(profileStatus: ProfileStatus.loading));
+    emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
-  try {
-    final updatedUser = await profileRepository.addFavoriteProduct(
-      user: state.user,
-      product: product,
-    );
+    try {
+      final updatedUser = await profileRepository.addFavoriteProduct(
+        user: state.user,
+        product: product,
+      );
 
-    emit(state.copyWith(
-      profileStatus: ProfileStatus.loaded,
-      user: updatedUser,
-    ));
-  } on CustomError catch (e) {
-    emit(state.copyWith(
-      profileStatus: ProfileStatus.error,
-      error: e,
-    ));
+      emit(state.copyWith(
+        profileStatus: ProfileStatus.loaded,
+        user: updatedUser,
+      ));
+    } on CustomError catch (e) {
+      emit(state.copyWith(
+        profileStatus: ProfileStatus.error,
+        error: e,
+      ));
+    }
   }
-}
 }
