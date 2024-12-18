@@ -4,39 +4,40 @@ part of 'cart_bloc.dart';
 
 enum CartStatus { initial, loading, loaded, error }
 
+// ignore: must_be_immutable
 class CartState extends Equatable {
   final CartStatus status;
-  final List<CartItem> cartItems;
+  final Cart cart;
   double totalPrice;
   final String userId;
 
   CartState(
       {required this.status,
-      required this.cartItems,
+      required this.cart,
       required this.totalPrice,
       required this.userId});
 
   factory CartState.initial() {
     return CartState(
       status: CartStatus.initial,
-      cartItems: [],
+      cart: Cart.initial(''),
       totalPrice: 0,
       userId: '',
     );
   }
 
   @override
-  List<Object> get props => [status, cartItems, totalPrice, userId];
+  List<Object> get props => [status, cart, totalPrice, userId];
 
   CartState copyWith({
     CartStatus? status,
-    List<CartItem>? cartItems,
+    Cart? cart,
     double? totalPrice,
     String? userId,
   }) {
     return CartState(
       status: status ?? this.status,
-      cartItems: cartItems ?? this.cartItems,
+      cart: cart ?? this.cart,
       totalPrice: totalPrice ?? this.totalPrice,
       userId: userId ?? this.userId,
     );

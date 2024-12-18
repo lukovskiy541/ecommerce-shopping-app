@@ -135,6 +135,9 @@ class Product {
     };
   }
 
+  
+  
+
   factory Product.fromJson(Map<String, dynamic> json) {
     Category category = Category.fromJson(json['category']);
     SubCategory subCategory = SubCategory.fromJson(json['subCategory']);

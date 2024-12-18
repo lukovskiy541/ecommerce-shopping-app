@@ -21,6 +21,8 @@ class CartItem {
     required this.bonusPointsForSubscribers,
   });
 
+  
+
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
       id: map['id'] ?? '',

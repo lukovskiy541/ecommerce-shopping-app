@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
@@ -9,10 +10,12 @@ import 'package:ecommerce_app/models/category_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:ecommerce_app/repositories/brands_repository.dart';
+import 'package:ecommerce_app/repositories/cart_repository.dart';
 import 'package:ecommerce_app/repositories/genders_repository.dart';
 import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
-import 'package:ecommerce_app/screens/bucket_screen.dart';
+
+import 'package:ecommerce_app/screens/cart/cart_screen.dart';
 import 'package:ecommerce_app/screens/liked_screen.dart';
 
 import 'package:ecommerce_app/screens/search_screen.dart';
@@ -209,6 +212,7 @@ Future<void> createProductsCollection() async {
   }
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -220,6 +224,10 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthRepository(
               firebaseFirestore: FirebaseFirestore.instance,
               firebaseAuth: FirebaseAuth.instance),
+        ),
+        RepositoryProvider<CartRepository>(
+          create: (context) => CartRepository(
+              firebaseFirestore: FirebaseFirestore.instance,)
         ),
         RepositoryProvider<ProfileRepository>(
           create: (context) => ProfileRepository(
@@ -244,6 +252,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
@@ -275,6 +284,12 @@ class MyApp extends StatelessWidget {
               gendersRepository: context.read<GendersRepository>(),
             ),
           ),
+          BlocProvider<CartBloc>(
+            create: (context) => CartBloc(
+              cartRepository: context.read<CartRepository>(),
+              profileCubit: context.read<ProfileCubit>(),
+            ),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -303,7 +318,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               PersistentTabConfig(
-                screen: FullscreenBackgroundImage(),
+                screen: CartScreen(),
                 item: ItemConfig(
                   activeForegroundColor: Colors.black,
                   inactiveForegroundColor: Colors.grey,
@@ -347,6 +362,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double iconSize = 35;
+
+  
 
   @override
   Widget build(BuildContext context) {
