@@ -27,6 +27,15 @@ class CartRemoveItemEvent extends CartEvent {
   List<Object> get props => [productId];
 }
 
+class CartRemoveSellerItemsEvent extends CartEvent {
+  final String seller;
+
+  const CartRemoveSellerItemsEvent(this.seller);
+
+  @override
+  List<Object> get props => [seller];
+}
+
 class CartUpdateItemQuantityEvent extends CartEvent {
   final String productId;
   final int quantity;
@@ -57,4 +66,3 @@ class CartApplyDiscountEvent extends CartEvent {
   List<Object> get props => [discountCode];
 }
 
-class CartCalculateTotalEvent extends CartEvent {}

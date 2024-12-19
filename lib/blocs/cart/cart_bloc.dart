@@ -25,6 +25,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
     on<CartLoadEvent>(_onLoadCart);
     on<CartAddItemEvent>(_onAddItemToCart);
+    on<CartRemoveSellerItemsEvent>(_onRemoveSellerItemsEvent);
   }
 
   Future<void> _onLoadCart(CartLoadEvent event, Emitter<CartState> emit) async {
@@ -46,11 +47,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> _onAddItemToCart(CartAddItemEvent event, Emitter<CartState> emit) async {
+  Future<void> _onAddItemToCart(
+      CartAddItemEvent event, Emitter<CartState> emit) async {
     emit(state.copyWith(status: CartStatus.loading));
 
     try {
-      final updatedCart = await cartRepository.addItemToCart(cartItem: event.cartItem, currentCart: event.currentCartState);
+      final updatedCart = await cartRepository.addItemToCart(
+          cartItem: event.cartItem, currentCart: event.currentCartState);
       emit(state.copyWith(
         status: CartStatus.loaded,
         cart: updatedCart,
@@ -63,20 +66,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  // Future<void> _onRemoveItemFromCart(CartRemoveItemEvent event, Emitter<CartState> emit) async {
-  //   emit(state.copyWith(status: CartStatus.loading));
+  Future<void> _onRemoveSellerItemsEvent(
+      CartRemoveSellerItemsEvent event, Emitter<CartState> emit) async {
+    emit(state.copyWith(status: CartStatus.loading));
 
-  //   try {
-  //     final updatedCart = await cartRepository.removeItemFromCart(event.item);
-  //     emit(state.copyWith(
-  //       status: CartStatus.loaded,
-  //       cartItems: updatedCart.items,
-  //       totalPrice: updatedCart.totalPrice,
-  //       userId: updatedCart.userId,
-  //     ));
-  //   } catch (error) {
-  //     print("Error removing item from cart: $error");
-  //     emit(state.copyWith(status: CartStatus.error, errorMessage: 'Failed to remove item from cart'));
-  //   }
-  // }
+    try {
+      final updatedItems = state.cart.items
+          .where((item) => item.product.seller != event.seller)
+          .toList();
+
+       final updatedCart = await cartRepository.updateCartItems(currentCart: state, updatedItems: updatedItems);
+
+      
+      emit(state.copyWith(
+        status: CartStatus.loaded,
+        cart: updatedCart,
+        totalPrice: updatedCart.totalPrice,
+        userId: updatedCart.userId,
+      ));
+    } catch (error) {
+      print("Error removing item from cart: $error");
+      emit(state.copyWith(status: CartStatus.error));
+    }
+  }
 }
