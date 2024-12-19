@@ -26,6 +26,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartLoadEvent>(_onLoadCart);
     on<CartAddItemEvent>(_onAddItemToCart);
     on<CartRemoveSellerItemsEvent>(_onRemoveSellerItemsEvent);
+    on<CartUpdateItemQuantityEvent>(_onUpdateQuanity);
+  }
+
+  Future<void> _onUpdateQuanity(
+      CartUpdateItemQuantityEvent event, Emitter<CartState> emit) async {
+    try {
+      final updatedItems = state.cart.items.map((item) {
+        if (item.product.id == event.productId && item.selectedSize == event.selectedSize ) {
+          return item.copyWith(quantity: item.quantity + event.quantity);
+        }
+        return item;
+      }).toList();
+      final updatedCart = await cartRepository.updateCartItems(
+          currentCart: state, updatedItems: updatedItems);
+      emit(state.copyWith(
+          cart: state.cart.copyWith(items: updatedItems),
+          totalPrice: updatedCart.totalPrice, 
+          status: CartStatus.loaded));
+    } catch (error, stackTrace) {
+      print("Error loading cart: $error");
+      print("Stack trace: $stackTrace");
+
+      emit(state.copyWith(status: CartStatus.error));
+    }
   }
 
   Future<void> _onLoadCart(CartLoadEvent event, Emitter<CartState> emit) async {
@@ -75,9 +99,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           .where((item) => item.product.seller != event.seller)
           .toList();
 
-       final updatedCart = await cartRepository.updateCartItems(currentCart: state, updatedItems: updatedItems);
+      final updatedCart = await cartRepository.updateCartItems(
+          currentCart: state, updatedItems: updatedItems);
 
-      
       emit(state.copyWith(
         status: CartStatus.loaded,
         cart: updatedCart,

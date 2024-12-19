@@ -142,7 +142,7 @@ class _CartCardState extends State<CartCard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(item.selectedSize),
-                                    Text('${item.quantity} штука')
+                                    Text('${item.quantity}')
                                   ],
                                 ),
                               )

@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
-import 'package:ecommerce_app/widgets/popular_products.dart';
-import 'package:ecommerce_app/widgets/products_of_day.dart';
+import 'package:ecommerce_app/screens/for_you/popular_products.dart';
+import 'package:ecommerce_app/screens/for_you/products_of_day.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 

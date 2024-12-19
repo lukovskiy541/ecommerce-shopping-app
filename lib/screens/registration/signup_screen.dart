@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/screens/registration/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app/widgets/signup_form.dart';
+import 'package:ecommerce_app/screens/registration/signup_form.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class SignUpScreen extends StatefulWidget {

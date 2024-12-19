@@ -3,7 +3,7 @@ import 'package:ecommerce_app/models/product_model.dart';
 class CartItem {
   final String id;
   final Product product;
-  final int quantity;
+   int quantity;
   final String selectedSize;
   final String selectedColor;
   final double price;

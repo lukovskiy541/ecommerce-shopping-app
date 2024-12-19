@@ -39,12 +39,15 @@ class CartRemoveSellerItemsEvent extends CartEvent {
 class CartUpdateItemQuantityEvent extends CartEvent {
   final String productId;
   final int quantity;
+  final String selectedSize;
 
-  const CartUpdateItemQuantityEvent(this.productId, this.quantity);
+  const CartUpdateItemQuantityEvent({required this.productId, required this.quantity,required this.selectedSize});
 
   @override
-  List<Object> get props => [productId, quantity];
+  List<Object> get props => [productId, quantity, selectedSize];
 }
+
+
 
 class CartClearEvent extends CartEvent {}
 

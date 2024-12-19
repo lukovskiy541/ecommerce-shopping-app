@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/models/cart_item_model.dart';
-import 'package:ecommerce_app/screens/bucket_screen.dart';
-import 'package:ecommerce_app/widgets/cart_card.dart';
+import 'package:ecommerce_app/screens/cart/bucket_screen.dart';
+import 'package:ecommerce_app/screens/cart/cart_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +13,44 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
+  Future<bool?> _showConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text('Видалити всі товари з кошика?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Ні'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Так'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleUserResponse(BuildContext context, Map<String, List<CartItem>> sellerToCartItems) async {
+    final bool? result = await _showConfirmationDialog(context);
+    if (result == true) {
+      for (var seller in sellerToCartItems.keys) {
+                                  context
+                                      .read<CartBloc>()
+                                      .add(CartRemoveSellerItemsEvent(seller));
+                                }
+      
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
@@ -32,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
               );
             });
             double full_price = List.generate(state.cart.items.length,
-                    (index) => state.cart.items[index].price)
+                    (index) => state.cart.items[index].price * state.cart.items[index].quantity)
                 .reduce((a, b) => a + b);
             return SafeArea(
               child: Scaffold(
@@ -66,7 +104,9 @@ class _CartScreenState extends State<CartScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 30.0),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _handleUserResponse(context, sellerToCartItems);
+                              },
                               child: Text(
                                 'Очистити',
                                 style: TextStyle(

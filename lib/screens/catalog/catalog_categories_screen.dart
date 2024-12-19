@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/models/category_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/products_repository.dart';
-import 'package:ecommerce_app/widgets/product_item.dart';
+import 'package:ecommerce_app/screens/catalog/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

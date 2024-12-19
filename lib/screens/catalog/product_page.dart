@@ -6,10 +6,9 @@ import 'package:ecommerce_app/models/cart_item_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/brands_repository.dart';
 
-import 'package:ecommerce_app/widgets/carousel.dart';
+import 'package:ecommerce_app/screens/catalog/carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -112,16 +111,25 @@ class _ProductPageState extends State<ProductPage> {
                     _scrollToSizes();
                   }
                 } else {
-                  context.read<CartBloc>().add(CartAddItemEvent(cartItem:  CartItem(
-                      id: '',
-                      product: widget.product,
-                      quantity: 1,
-                      selectedSize: _selectedSize.toString(),
-                      selectedColor: widget.product.availableColors[0],
-                      price: widget.product.price * 1,
-                      bonusPoints: widget.product.bonusPoints,
-                      bonusPointsForSubscribers:
-                          widget.product.bonusPointsForSubscribers), currentCartState: context.read<CartBloc>().state));
+                  if (context.read<CartBloc>().state.cart.items.any(
+                      (element) => element.product.id == widget.product.id &&
+                          element.selectedSize == _selectedSize.toString())) {
+                    context.read<CartBloc>().add(CartUpdateItemQuantityEvent(
+                        productId: widget.product.id, quantity: 1, selectedSize: _selectedSize.toString()));
+                    context.read<NavigationCubit>().switchTab(2);
+                  } else
+                    context.read<CartBloc>().add(CartAddItemEvent(
+                        cartItem: CartItem(
+                            id: '',
+                            product: widget.product,
+                            quantity: 1,
+                            selectedSize: _selectedSize.toString(),
+                            selectedColor: widget.product.availableColors[0],
+                            price: widget.product.price * 1,
+                            bonusPoints: widget.product.bonusPoints,
+                            bonusPointsForSubscribers:
+                                widget.product.bonusPointsForSubscribers),
+                        currentCartState: context.read<CartBloc>().state));
                   context.read<NavigationCubit>().switchTab(2);
                 }
               },

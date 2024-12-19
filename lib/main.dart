@@ -17,12 +17,12 @@ import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
 
 import 'package:ecommerce_app/screens/cart/cart_screen.dart';
-import 'package:ecommerce_app/screens/liked_screen.dart';
+import 'package:ecommerce_app/screens/main%20pages/liked_screen.dart';
 
-import 'package:ecommerce_app/screens/search_screen.dart';
-import 'package:ecommerce_app/screens/shops_screen.dart';
+import 'package:ecommerce_app/screens/catalog/search_screen.dart';
+import 'package:ecommerce_app/screens/main%20pages/shops_screen.dart';
 import 'package:ecommerce_app/utils/my_flutter_app_icons.dart';
-import 'package:ecommerce_app/screens/for_you_screen.dart';
+import 'package:ecommerce_app/screens/for_you/for_you_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

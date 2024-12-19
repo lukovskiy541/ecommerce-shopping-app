@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/models/product_model.dart';
-import 'package:ecommerce_app/screens/product_page.dart';
+import 'package:ecommerce_app/screens/catalog/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:string_to_color/string_to_color.dart';
 
