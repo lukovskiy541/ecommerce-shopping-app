@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
+import 'package:ecommerce_app/blocs/navigation/navigation_cubit.dart';
 import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
@@ -212,7 +213,6 @@ Future<void> createProductsCollection() async {
   }
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -226,9 +226,9 @@ class MyApp extends StatelessWidget {
               firebaseAuth: FirebaseAuth.instance),
         ),
         RepositoryProvider<CartRepository>(
-          create: (context) => CartRepository(
-              firebaseFirestore: FirebaseFirestore.instance,)
-        ),
+            create: (context) => CartRepository(
+                  firebaseFirestore: FirebaseFirestore.instance,
+                )),
         RepositoryProvider<ProfileRepository>(
           create: (context) => ProfileRepository(
             firebaseFirestore: FirebaseFirestore.instance,
@@ -252,7 +252,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
@@ -271,7 +270,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(
               profileRepository: context.read<ProfileRepository>(),
-               authRepository: context.read<AuthRepository>(),
+              authRepository: context.read<AuthRepository>(),
             ),
           ),
           BlocProvider<ProductsBloc>(
@@ -290,6 +289,9 @@ class MyApp extends StatelessWidget {
               profileCubit: context.read<ProfileCubit>(),
             ),
           ),
+          BlocProvider<NavigationCubit>(
+            create: (context) => NavigationCubit(),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -297,55 +299,61 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          home: PersistentTabView(
-            tabs: [
-              PersistentTabConfig(
-                screen: ForYouScreen(),
-                item: ItemConfig(
+          home: BlocBuilder<NavigationCubit, NavigationState>(
+              builder: (context, currentIndex) {
+            return PersistentTabView(
+              controller: context.read<NavigationCubit>().controller,
+              
+              tabs: [
+                PersistentTabConfig(
+                  screen: ForYouScreen(),
+                  item: ItemConfig(
+                      activeForegroundColor: Colors.black,
+                      inactiveForegroundColor: Colors.grey,
+                      icon: Icon(
+                        MyFlutterApp.logo,
+                        size: 24,
+                      )),
+                ),
+                PersistentTabConfig(
+                  screen: SearchScreen(),
+                  item: ItemConfig(
                     activeForegroundColor: Colors.black,
                     inactiveForegroundColor: Colors.grey,
-                    icon: Icon(
-                      MyFlutterApp.logo,
-                      size: 24,
-                    )),
-              ),
-              PersistentTabConfig(
-                screen: SearchScreen(),
-                item: ItemConfig(
-                  activeForegroundColor: Colors.black,
-                  inactiveForegroundColor: Colors.grey,
-                  icon: Icon(Icons.search),
+                    icon: Icon(Icons.search),
+                  ),
                 ),
-              ),
-              PersistentTabConfig(
-                screen: CartScreen(),
-                item: ItemConfig(
-                  activeForegroundColor: Colors.black,
-                  inactiveForegroundColor: Colors.grey,
-                  icon: Icon(Icons.shopping_basket_outlined),
+                PersistentTabConfig(
+                  screen: CartScreen(),
+                  item: ItemConfig(
+                    activeForegroundColor: Colors.black,
+                    inactiveForegroundColor: Colors.grey,
+                    icon: Icon(Icons.shopping_basket_outlined),
+                  ),
                 ),
-              ),
-              PersistentTabConfig(
-                screen: LikedScreen(),
-                item: ItemConfig(
-                  activeForegroundColor: Colors.black,
-                  inactiveForegroundColor: Colors.grey,
-                  icon: Icon(Icons.favorite_border),
+                PersistentTabConfig(
+                  screen: LikedScreen(),
+                  item: ItemConfig(
+                    activeForegroundColor: Colors.black,
+                    inactiveForegroundColor: Colors.grey,
+                    icon: Icon(Icons.favorite_border),
+                  ),
                 ),
+                PersistentTabConfig(
+                  screen: ShopsScreen(),
+                  item: ItemConfig(
+                    activeForegroundColor: Colors.black,
+                    inactiveForegroundColor: Colors.grey,
+                    icon: Icon(Icons.check_box_outline_blank_sharp),
+                  ),
+                )
+              ],
+              
+              navBarBuilder: (navBarConfig) => Style1BottomNavBar(
+                navBarConfig: navBarConfig,
               ),
-              PersistentTabConfig(
-                screen: ShopsScreen(),
-                item: ItemConfig(
-                  activeForegroundColor: Colors.black,
-                  inactiveForegroundColor: Colors.grey,
-                  icon: Icon(Icons.check_box_outline_blank_sharp),
-                ),
-              )
-            ],
-            navBarBuilder: (navBarConfig) => Style1BottomNavBar(
-              navBarConfig: navBarConfig,
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );
@@ -362,8 +370,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double iconSize = 35;
-
-  
 
   @override
   Widget build(BuildContext context) {

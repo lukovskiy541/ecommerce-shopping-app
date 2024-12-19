@@ -5,6 +5,7 @@ import 'package:ecommerce_app/models/cart_item_model.dart';
 import 'package:ecommerce_app/models/cart_model.dart';
 
 
+
 class CartRepository {
   final FirebaseFirestore firebaseFirestore;
   CartRepository({
@@ -38,10 +39,17 @@ class CartRepository {
 
     Cart updatedCart = currentCart.cart.copyWith(items: updatedCartItems);
 
-    await firebaseFirestore
-        .collection('carts')
-        .doc(updatedCart.id)
-        .update(updatedCart.toFirestore());
+    if (updatedCart.id == null || updatedCart.id!.isEmpty) {
+      DocumentReference docRef = await firebaseFirestore
+          .collection('carts')
+          .add(updatedCart.toFirestore());
+      updatedCart = updatedCart.copyWith(id: docRef.id);
+    } else {
+      await firebaseFirestore
+          .collection('carts')
+          .doc(updatedCart.id)
+          .update(updatedCart.toFirestore());
+    }
     return updatedCart;
   }
 
