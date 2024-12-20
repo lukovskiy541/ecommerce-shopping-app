@@ -97,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: SizedBox(
-            width: 390,
+            width: MediaQuery.of(context).size.width - 20,
             height: 50,
             child: FloatingActionButton.extended(
               onPressed: () {

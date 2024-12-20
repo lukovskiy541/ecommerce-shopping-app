@@ -304,31 +304,19 @@ class User extends Equatable {
 class DeliveryAddress {
   final String id;
   final String city;
-  final String street;
-  final String house;
-  final String? apartment;
-  final String? notes;
-  final bool isDefault;
+
 
   DeliveryAddress({
     required this.id,
     required this.city,
-    required this.street,
-    required this.house,
-    this.apartment,
-    this.notes,
-    required this.isDefault,
+
   });
 
   factory DeliveryAddress.fromMap(Map<String, dynamic> map) {
     return DeliveryAddress(
       id: map['id'] ?? '',
       city: map['city'] ?? '',
-      street: map['street'] ?? '',
-      house: map['house'] ?? '',
-      apartment: map['apartment'],
-      notes: map['notes'],
-      isDefault: map['isDefault'] ?? false,
+     
     );
   }
 
@@ -336,11 +324,7 @@ class DeliveryAddress {
     return {
       'id': id,
       'city': city,
-      'street': street,
-      'house': house,
-      'apartment': apartment,
-      'notes': notes,
-      'isDefault': isDefault,
+   
     };
   }
 }

@@ -33,7 +33,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       CartUpdateItemQuantityEvent event, Emitter<CartState> emit) async {
     try {
       final updatedItems = state.cart.items.map((item) {
-        if (item.product.id == event.productId && item.selectedSize == event.selectedSize ) {
+        if (item.product.id == event.productId &&
+            item.selectedSize == event.selectedSize) {
           return item.copyWith(quantity: item.quantity + event.quantity);
         }
         return item;
@@ -42,7 +43,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           currentCart: state, updatedItems: updatedItems);
       emit(state.copyWith(
           cart: state.cart.copyWith(items: updatedItems),
-          totalPrice: updatedCart.totalPrice, 
+          totalPrice: updatedCart.totalPrice,
           status: CartStatus.loaded));
     } catch (error, stackTrace) {
       print("Error loading cart: $error");
@@ -74,7 +75,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> _onAddItemToCart(
       CartAddItemEvent event, Emitter<CartState> emit) async {
     emit(state.copyWith(status: CartStatus.loading));
-
+    if (state.status != CartStatus.loaded) {
+      try {
+        await cartRepository.getCart(userId: state.userId);
+      } catch (error) {
+        emit(state.copyWith(
+          status: CartStatus.error,
+        ));
+        return;
+      }
+    }
     try {
       final updatedCart = await cartRepository.addItemToCart(
           cartItem: event.cartItem, currentCart: event.currentCartState);

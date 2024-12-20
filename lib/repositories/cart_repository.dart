@@ -39,7 +39,7 @@ class CartRepository {
 
     Cart updatedCart = currentCart.cart.copyWith(items: updatedCartItems);
 
-    if (updatedCart.id == null || updatedCart.id!.isEmpty) {
+    if (updatedCart.id.isEmpty) {
       DocumentReference docRef = await firebaseFirestore
           .collection('carts')
           .add(updatedCart.toFirestore());

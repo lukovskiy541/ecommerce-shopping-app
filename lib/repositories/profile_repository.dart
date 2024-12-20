@@ -10,6 +10,22 @@ class ProfileRepository {
     required this.firebaseFirestore,
   });
 
+  Future<User> updateProfile({required User user}) async {
+    try {
+      await firebaseFirestore.collection('users').doc(user.id).update({
+        'name': user.name,
+        'surname': user.surname,
+        'patronymic': user.patronymic,
+        'phone': user.phone,
+        'addresses': user.addresses.map((e) => e.toMap()).toList(),
+      });
+
+      return user;
+    } catch (e) {
+      throw CustomError(message: 'Failed to update profile');
+    }
+  }
+
   Future<User> addFavoriteProduct({
     required User user,
     required Product product,

@@ -1,9 +1,12 @@
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
+import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/models/cart_item_model.dart';
 import 'package:ecommerce_app/screens/cart/bucket_screen.dart';
 import 'package:ecommerce_app/screens/cart/cart_card.dart';
+import 'package:ecommerce_app/screens/cart/order_placement_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -13,7 +16,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   Future<bool?> _showConfirmationDialog(BuildContext context) async {
     return showDialog<bool>(
       context: context,
@@ -39,15 +41,13 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void _handleUserResponse(BuildContext context, Map<String, List<CartItem>> sellerToCartItems) async {
+  void _handleUserResponse(BuildContext context,
+      Map<String, List<CartItem>> sellerToCartItems) async {
     final bool? result = await _showConfirmationDialog(context);
     if (result == true) {
       for (var seller in sellerToCartItems.keys) {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(CartRemoveSellerItemsEvent(seller));
-                                }
-      
+        context.read<CartBloc>().add(CartRemoveSellerItemsEvent(seller));
+      }
     }
   }
 
@@ -69,30 +69,34 @@ class _CartScreenState extends State<CartScreen> {
                 ifAbsent: () => [item],
               );
             });
-            double full_price = List.generate(state.cart.items.length,
-                    (index) => state.cart.items[index].price * state.cart.items[index].quantity)
-                .reduce((a, b) => a + b);
+            double full_price = List.generate(
+                state.cart.items.length,
+                (index) =>
+                    state.cart.items[index].price *
+                    state.cart.items[index].quantity).reduce((a, b) => a + b);
             return SafeArea(
               child: Scaffold(
-                  floatingActionButton: SizedBox(
-            width: 390,
-            height: 50,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                
-                
-              },
-              label: Text(
-                'Оформити замовлення',
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5)),
-              backgroundColor: Colors.black,
-              elevation: 0,
-              highlightElevation: 0,
-            ),
-          ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerFloat,
+                floatingActionButton: SizedBox(
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 50,
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      print(context.read<ProfileCubit>().state.user);
+                      pushScreenWithNavBar(context, OrderPlacementScreen());
+                    },
+                    label: Text(
+                      'Оформити замовлення',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    backgroundColor: Colors.black,
+                    elevation: 0,
+                    highlightElevation: 0,
+                  ),
+                ),
                 backgroundColor: Colors.grey.shade200,
                 body: SingleChildScrollView(
                   child: Column(
@@ -143,14 +147,17 @@ class _CartScreenState extends State<CartScreen> {
                                 seller: seller,
                               ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20, bottom: 80),
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, left: 20, right: 20, bottom: 80),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Разом:',
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 30),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30),
                                   ),
                                   Text('\$ ${full_price}')
                                 ],

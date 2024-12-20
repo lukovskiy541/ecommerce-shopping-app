@@ -42,6 +42,23 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> updateProfile({required User user}) async {
+    emit(state.copyWith(profileStatus: ProfileStatus.loading));
+
+    try {
+      final updatedUser = await profileRepository.updateProfile(user: user);
+      emit(state.copyWith(
+        profileStatus: ProfileStatus.loaded,
+        user: updatedUser,
+      ));
+    } on CustomError catch (e) {
+      emit(state.copyWith(
+        profileStatus: ProfileStatus.error,
+        error: e,
+      ));
+    }
+  }
+
   Future<void> addFavorite({required Product product}) async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
