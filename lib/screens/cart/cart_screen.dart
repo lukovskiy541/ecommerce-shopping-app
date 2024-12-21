@@ -55,10 +55,15 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
+        if (state.userId  == '') {
+          return FullscreenBackgroundImage();
+        }
         if (state.status == CartStatus.loaded) {
           if (state.cart.items.isEmpty) {
             return FullscreenBackgroundImage();
-          } else {
+          }
+          
+           else {
             Map<String, List<CartItem>> sellerToCartItems = {};
             state.cart.items.forEach((item) {
               String seller = item.product.seller;

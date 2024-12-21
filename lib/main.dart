@@ -6,7 +6,7 @@ import 'package:ecommerce_app/blocs/navigation/navigation_cubit.dart';
 import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
-import 'package:ecommerce_app/blocs/signup/signup_cubit.dart';
+import 'package:ecommerce_app/blocs/signin/signup_cubit.dart';
 import 'package:ecommerce_app/models/category_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';

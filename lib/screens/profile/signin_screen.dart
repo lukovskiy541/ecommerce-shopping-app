@@ -1,8 +1,8 @@
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
-import 'package:ecommerce_app/screens/registration/profile_screen.dart';
-import 'package:ecommerce_app/screens/registration/signup_screen.dart';
+import 'package:ecommerce_app/screens/profile/profile_screen.dart';
+import 'package:ecommerce_app/screens/profile/signup_screen.dart';
 
-import 'package:ecommerce_app/screens/registration/login_form.dart';
+import 'package:ecommerce_app/screens/profile/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -24,7 +24,6 @@ class _SignInScreenState extends State<SignInScreen> {
         listener: (context, state) async {},
         builder: (context, state) {
           return Scaffold(
-            
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               automaticallyImplyLeading: false,

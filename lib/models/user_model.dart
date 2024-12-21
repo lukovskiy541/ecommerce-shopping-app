@@ -41,7 +41,7 @@ class User extends Equatable {
       email: '',
       name: '',
       surname: '',
-      patronymic: null,
+      patronymic: '',
       sex: false,
       birthday: DateTime.now(),
       phone: '',
@@ -49,8 +49,8 @@ class User extends Equatable {
       cardLevel: 'Base',
       hasSubscription: false,
       addresses: [],
-      shoeSize: null,
-      clothingSize: null,
+      shoeSize: '',
+      clothingSize: '',
       favoriteCategories: [],
       favoriteProducts: [],
       orderHistory: [],
@@ -268,13 +268,13 @@ class User extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       email,
       name,
       surname,
-      patronymic!,
+      patronymic,
       sex,
       birthday,
       phone,
@@ -282,13 +282,13 @@ class User extends Equatable {
       cardLevel,
       hasSubscription,
       addresses,
-      shoeSize!,
-      clothingSize!,
+      shoeSize,
+      clothingSize,
       favoriteCategories,
       favoriteProducts,
       orderHistory,
       reviews,
-      preferredLanguage!,
+      preferredLanguage,
       notificationSettings,
       createdAt,
       lastLogin,

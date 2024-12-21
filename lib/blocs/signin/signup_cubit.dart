@@ -3,7 +3,7 @@ import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'signup_state.dart';
+part '../signup/signup_state.dart';
 
 class SignupCubit extends Cubit<SignupState> {
   final AuthRepository authRepository;

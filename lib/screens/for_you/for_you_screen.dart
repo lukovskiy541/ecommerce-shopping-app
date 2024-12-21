@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/screens/registration/profile_screen.dart';
+import 'package:ecommerce_app/screens/profile/profile_screen.dart';
 import 'package:ecommerce_app/screens/for_you/popular_products.dart';
 import 'package:ecommerce_app/screens/for_you/products_of_day.dart';
 import 'package:flutter/material.dart';

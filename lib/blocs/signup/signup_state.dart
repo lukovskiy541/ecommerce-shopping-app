@@ -1,5 +1,5 @@
 
-part of 'signup_cubit.dart';
+part of '../signin/signup_cubit.dart';
 
 enum SignupStatus { initial, submiting, success, error }
 

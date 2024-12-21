@@ -2,6 +2,7 @@ import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/models/cart_item_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
+import 'package:ecommerce_app/screens/cart/delivery_screen.dart';
 import 'package:ecommerce_app/screens/cart/recipient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,8 @@ class OrderPlacementScreen extends StatefulWidget {
 }
 
 class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
+  bool isDeliverySelected = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,32 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton:  SizedBox(
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 50,
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      isDeliverySelected ? () {
+                          print(context.read<ProfileCubit>().state.user);
+                      pushScreenWithNavBar(context, OrderPlacementScreen());
+                      }
+                      
+                      : null;
+                    },
+                    label: Text(
+                      'Оформити замовлення',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    backgroundColor: isDeliverySelected ? Colors.black : Colors.grey.shade300,
+                    elevation: 0,
+                    highlightElevation: 0,
+                  ),
+   
+      ) ,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
@@ -51,11 +80,7 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                 ifAbsent: () => [item],
               );
             });
-            double full_price = List.generate(
-                state.cart.items.length,
-                (index) =>
-                    state.cart.items[index].price *
-                    state.cart.items[index].quantity).reduce((a, b) => a + b);
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -77,45 +102,118 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                     width: double.infinity,
                     height: 150,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 10,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Одержувач',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                '${context.read<ProfileCubit>().state.user.name} ${context.read<ProfileCubit>().state.user.surname} ${context.read<ProfileCubit>().state.user.patronymic}',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                '${context.read<ProfileCubit>().state.user.phone}',
+                                style:
+                                    TextStyle(fontSize: 20, color: Colors.grey),
+                              ),
+                              Text(
+                                '${context.read<ProfileCubit>().state.user.addresses[0].city}',
+                                style:
+                                    TextStyle(fontSize: 20, color: Colors.grey),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'Одержувач',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '${context.read<ProfileCubit>().state.user.name} ${context.read<ProfileCubit>().state.user.surname} ${context.read<ProfileCubit>().state.user.patronymic}',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '${context.read<ProfileCubit>().state.user.phone}',
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
-                          ),
-                          Text(
-                            '${context.read<ProfileCubit>().state.user.addresses[0].city}',
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Icon(Icons.arrow_forward_ios)
-                    ]),
+                          Spacer(),
+                          Icon(Icons.arrow_forward_ios)
+                        ]),
                   ),
                 ),
+                SizedBox(height: 40),
+                Padding(
+                    padding: EdgeInsets.only(left: 0),
+                    child: Text(
+                      'Відділення',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    )),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () => pushWithNavBar(
+                      context, MaterialPageRoute(builder: (context) => DeliveryScreen())),
+                  child: Container(
+                      width: double.infinity,
+                      height: 150,
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Нова пошта',
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                                Text('\$11'),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Text('тариф перевізника'),
+                                  ),
+                                  Icon(Icons.arrow_forward_ios)
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      )),
+                ),
+                SizedBox(height: 40),
+                Padding(
+                    padding: EdgeInsets.only(left: 0),
+                    child: Row(
+                      children:[ Text(
+                        'Разом',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                      Spacer(),
+                      Text('\$${state.cart.totalPrice}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),)
+                      ]
+                    ),),
+
               ],
             );
           }),

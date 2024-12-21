@@ -20,10 +20,21 @@ class ProfileCubit extends Cubit<ProfileState> {
     required this.profileRepository,
     required this.authRepository,
   }) : super(ProfileState.initial()) {
+
     authSubscription = authRepository.user.listen((fbAuth.User? user) {
-      getProfile(uid: user!.uid);
+      if (user == null) {
+        emit(state.copyWith( user: null, profileStatus: ProfileStatus.initial));
+      } else {
+        getProfile(uid: user.uid);
+      }
     });
   }
+  
+  @override
+Future<void> close() {
+  authSubscription.cancel();
+  return super.close();
+}
 
   Future<void> getProfile({required String uid}) async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));

@@ -22,11 +22,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (profileState.profileStatus == ProfileStatus.loaded) {
         add(CartLoadEvent(userId: profileState.user.id));
       }
+      if (profileState.profileStatus == ProfileStatus.initial) {
+        add(CartClearEvent());
+      }
     });
     on<CartLoadEvent>(_onLoadCart);
     on<CartAddItemEvent>(_onAddItemToCart);
     on<CartRemoveSellerItemsEvent>(_onRemoveSellerItemsEvent);
     on<CartUpdateItemQuantityEvent>(_onUpdateQuanity);
+    on<CartClearEvent>((event, emit) {
+      emit(CartState.initial());
+    });
   }
 
   Future<void> _onUpdateQuanity(
