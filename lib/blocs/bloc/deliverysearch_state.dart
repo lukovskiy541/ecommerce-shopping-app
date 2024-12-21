@@ -9,7 +9,7 @@ class DeliverySearchState extends Equatable {
   DeliverySearchState({required this.deliverySearchList, required this.searchTerm});
   
   @override
-  List<Object> get props => [];
+  List<Object> get props => [deliverySearchList, searchTerm];
 
   factory DeliverySearchState.initial() {
   return DeliverySearchState(

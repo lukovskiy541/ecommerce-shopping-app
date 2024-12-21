@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/models/cart_item_model.dart';
 
 class Order {
   Order({
@@ -7,7 +8,7 @@ class Order {
     required this.status,
     required this.items,
     required this.deliveryAdress,
-    required this.paymentInfo,
+
     required this.createdAt,
     required this.subtotal,
     required this.deliveryCost,
@@ -31,7 +32,7 @@ class Order {
   final OrderStatus status;
   final List<dynamic> items;
   final String deliveryAdress;
-  final PaymentInfo paymentInfo;
+
   
   final DateTime createdAt;
   final DateTime? confirmedAt;
@@ -62,12 +63,10 @@ class Order {
         orElse: () => OrderStatus.pending,
       ),
       items: (map['items'] as List<dynamic>?)
-          ?.map((item) => OrderItem.fromMap(item as Map<String, dynamic>))
+          ?.map((item) => CartItem.fromMap(item as Map<String, dynamic>))
           .toList() ?? [],
       deliveryAdress: map['deliveryAdress'] ?? '',
-      paymentInfo: PaymentInfo.fromMap(
-        map['paymentInfo'] as Map<String, dynamic>? ?? {},
-      ),
+
       createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       confirmedAt: (map['confirmedAt'] as Timestamp?)?.toDate(),
       processedAt: (map['processedAt'] as Timestamp?)?.toDate(),
@@ -89,50 +88,7 @@ class Order {
   }
 }
 
-class OrderItem {
-  OrderItem({
-    required this.id,
-    required this.productId,
-    required this.productName,
-    required this.size,
-    required this.color,
-    required this.sku,
-    required this.quantity,
-    required this.price,
-    required this.total,
-    required this.canBeReturned,
-    this.note,
-    this.returnDeadline
-  });
-  final String id;
-  final String productId;
-  final String productName;
-  final String size;
-  final String color;
-  final String sku;
-  final int quantity;
-  final double price;
-  final double total;
-  final String? note;
-  final bool canBeReturned;
-  final DateTime? returnDeadline;
-   factory OrderItem.fromMap(Map<String, dynamic> map) {
-    return OrderItem(
-      id: map['id'] ?? '',
-      productId: map['productId'] ?? '',
-      productName: map['productName'] ?? '',
-      size: map['size'] ?? '',
-      color: map['color'] ?? '',
-      sku: map['sku'] ?? '',
-      quantity: map['quantity'] ?? 0,
-      price: (map['price'] ?? 0).toDouble(),
-      total: (map['total'] ?? 0).toDouble(),
-      note: map['note'],
-      canBeReturned: map['canBeReturned'] ?? false,
-      returnDeadline: (map['returnDeadline'] as Timestamp?)?.toDate(),
-    );
-  }
-}
+
 
 
 

@@ -31,6 +31,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartRemoveSellerItemsEvent>(_onRemoveSellerItemsEvent);
     on<CartUpdateItemQuantityEvent>(_onUpdateQuanity);
     on<CartClearEvent>((event, emit) {
+      cartRepository.clearCart(currentCart: state);
       emit(CartState.initial());
     });
   }

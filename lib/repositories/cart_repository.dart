@@ -65,4 +65,13 @@ class CartRepository {
         .update(updatedCart.toFirestore());
     return updatedCart;
   }
+
+  Future<Cart> clearCart({required CartState currentCart}) async {
+    Cart updatedCart = currentCart.cart.copyWith(items: []);
+    await firebaseFirestore
+        .collection('carts')
+        .doc(updatedCart.id)
+        .update(updatedCart.toFirestore());
+    return updatedCart;
+  }
 }

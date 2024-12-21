@@ -15,14 +15,27 @@ class DeliverysearchBloc
     });
 
     on<SetSearchTermEvent>((event, emit) {
-     final filteredList = state.deliverySearchList
-          .where((element) => element.toLowerCase().contains(event.newSearchTerm.toLowerCase()))
-          .toList();
-          print('Filtered list: $filteredList');
-      emit(state.copyWith(
-        searchTerm: event.newSearchTerm,
-        deliverySearchList: filteredList,
-      ));
+      if (state.deliverySearchList.isEmpty) {
+        emit(state.copyWith(deliverySearchList: state.deliverySearchList));
+      }
+
+      if (event.newSearchTerm.isEmpty) {
+        emit(state.copyWith(
+          searchTerm: event.newSearchTerm,
+          deliverySearchList: state.deliverySearchList,
+        ));
+      } else {
+        final filteredList = state.deliverySearchList
+            .where((element) => element
+                .toLowerCase()
+                .contains(event.newSearchTerm.toLowerCase()))
+            .toList();
+
+        emit(state.copyWith(
+          searchTerm: event.newSearchTerm,
+          deliverySearchList: filteredList,
+        ));
+      }
     });
   }
 }

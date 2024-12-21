@@ -14,6 +14,7 @@ import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:ecommerce_app/repositories/brands_repository.dart';
 import 'package:ecommerce_app/repositories/cart_repository.dart';
 import 'package:ecommerce_app/repositories/genders_repository.dart';
+import 'package:ecommerce_app/repositories/order_repository.dart';
 import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
 
@@ -250,6 +251,11 @@ class MyApp extends StatelessWidget {
             firebaseFirestore: FirebaseFirestore.instance,
           ),
         ),
+        RepositoryProvider<OrderRepository>(
+          create: (context) => OrderRepository(
+            firebaseFirestore: FirebaseFirestore.instance,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -274,6 +280,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(
+              orderRepository: context.read<OrderRepository>(),
               profileRepository: context.read<ProfileRepository>(),
               authRepository: context.read<AuthRepository>(),
             ),

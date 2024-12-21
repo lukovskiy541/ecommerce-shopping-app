@@ -90,12 +90,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                 return ListView.builder(
                   itemCount: state.deliverySearchList.length,
                   itemBuilder: (context, index) {
-                    if (state.searchTerm.isNotEmpty &&
-                        !state.deliverySearchList[index]
-                            .toLowerCase()
-                            .contains(state.searchTerm.toLowerCase())) {
-                      return const SizedBox.shrink();
-                    }
+                   
                     return ListTile(
                       title: Text(state.deliverySearchList[index]),
                       onTap: () {
