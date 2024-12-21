@@ -6,7 +6,7 @@ class Order {
     required this.userId,
     required this.status,
     required this.items,
-    required this.deliveryInfo,
+    required this.deliveryAdress,
     required this.paymentInfo,
     required this.createdAt,
     required this.subtotal,
@@ -30,7 +30,7 @@ class Order {
   final String userId;
   final OrderStatus status;
   final List<dynamic> items;
-  final DeliveryInfo deliveryInfo;
+  final String deliveryAdress;
   final PaymentInfo paymentInfo;
   
   final DateTime createdAt;
@@ -64,9 +64,7 @@ class Order {
       items: (map['items'] as List<dynamic>?)
           ?.map((item) => OrderItem.fromMap(item as Map<String, dynamic>))
           .toList() ?? [],
-      deliveryInfo: DeliveryInfo.fromMap(
-        map['deliveryInfo'] as Map<String, dynamic>? ?? {},
-      ),
+      deliveryAdress: map['deliveryAdress'] ?? '',
       paymentInfo: PaymentInfo.fromMap(
         map['paymentInfo'] as Map<String, dynamic>? ?? {},
       ),
@@ -136,65 +134,7 @@ class OrderItem {
   }
 }
 
-class DeliveryInfo {
-  DeliveryInfo({
-    required this.type,
-    required this.recipientName,
-    required this.phone,
-    this.email,
-    this.city,
-    this.street,
-    this.house,
-    this.apartment,
-    this.postalCode,
-    this.novaPoshtaCity,
-    this.novaPoshtaOffice,
-    this.trackingNumber,
-    this.storeId,
-    this.storeName,
-    this.storeAddress
-  });
-  final DeliveryType type;
-  final String recipientName;
-  final String phone;
-  final String? email;
-  
-  final String? city;
-  final String? street;
-  final String? house;
-  final String? apartment;
-  final String? postalCode;
-  
-  final String? novaPoshtaCity;
-  final String? novaPoshtaOffice;
-  final String? trackingNumber;
-  
-  final String? storeId;
-  final String? storeName;
-  final String? storeAddress;
-  factory DeliveryInfo.fromMap(Map<String, dynamic> map) {
-    return DeliveryInfo(
-      type: DeliveryType.values.firstWhere(
-        (e) => e.toString() == 'DeliveryType.${map['type'] ?? 'novaPoshta'}',
-        orElse: () => DeliveryType.novaPoshta,
-      ),
-      recipientName: map['recipientName'] ?? '',
-      phone: map['phone'] ?? '',
-      email: map['email'],
-      city: map['city'],
-      street: map['street'],
-      house: map['house'],
-      apartment: map['apartment'],
-      postalCode: map['postalCode'],
-      novaPoshtaCity: map['novaPoshtaCity'],
-      novaPoshtaOffice: map['novaPoshtaOffice'],
-      trackingNumber: map['trackingNumber'],
-      storeId: map['storeId'],
-      storeName: map['storeName'],
-      storeAddress: map['storeAddress'],
-    );
-  }
-}
+
 
 class PaymentInfo {
   PaymentInfo({

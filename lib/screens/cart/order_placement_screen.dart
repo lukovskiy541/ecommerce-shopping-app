@@ -41,31 +41,29 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
     return Scaffold(
       appBar: AppBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton:  SizedBox(
-                  width: MediaQuery.of(context).size.width - 20,
-                  height: 50,
-                  child: FloatingActionButton.extended(
-                    onPressed: () {
-                      isDeliverySelected ? () {
-                          print(context.read<ProfileCubit>().state.user);
-                      pushScreenWithNavBar(context, OrderPlacementScreen());
-                      }
-                      
-                      : null;
-                    },
-                    label: Text(
-                      'Оформити замовлення',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    ),
-                    
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    backgroundColor: isDeliverySelected ? Colors.black : Colors.grey.shade300,
-                    elevation: 0,
-                    highlightElevation: 0,
-                  ),
-   
-      ) ,
+      floatingActionButton: SizedBox(
+        width: MediaQuery.of(context).size.width - 20,
+        height: 50,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            isDeliverySelected
+                ? () {
+                    print(context.read<ProfileCubit>().state.user);
+                    pushScreenWithNavBar(context, OrderPlacementScreen());
+                  }
+                : null;
+          },
+          label: Text(
+            'Оформити замовлення',
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          backgroundColor:
+              isDeliverySelected ? Colors.black : Colors.grey.shade300,
+          elevation: 0,
+          highlightElevation: 0,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
@@ -154,8 +152,19 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                     )),
                 SizedBox(height: 10),
                 GestureDetector(
-                  onTap: () => pushWithNavBar(
-                      context, MaterialPageRoute(builder: (context) => DeliveryScreen())),
+                  onTap: () async {
+                    String postDepartment = await pushWithNavBar(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeliveryScreen()));
+
+                      
+                      setState(() {
+                        isDeliverySelected = true;
+                      });
+                      
+                    
+                  },
                   child: Container(
                       width: double.infinity,
                       height: 150,
@@ -172,7 +181,8 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                                 Text(
                                   'Нова пошта',
                                   style: TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.bold),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text('\$11'),
                               ],
@@ -196,24 +206,25 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                 ),
                 SizedBox(height: 40),
                 Padding(
-                    padding: EdgeInsets.only(left: 0),
-                    child: Row(
-                      children:[ Text(
-                        'Разом',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                        ),
+                  padding: EdgeInsets.only(left: 0),
+                  child: Row(children: [
+                    Text(
+                      'Разом',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
                       ),
-                      Spacer(),
-                      Text('\$${state.cart.totalPrice}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                          ),)
-                      ]
-                    ),),
-
+                    ),
+                    Spacer(),
+                    Text(
+                      '\$${state.cart.totalPrice}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    )
+                  ]),
+                ),
               ],
             );
           }),

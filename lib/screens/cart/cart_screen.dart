@@ -56,7 +56,14 @@ class _CartScreenState extends State<CartScreen> {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         if (state.userId  == '') {
-          return FullscreenBackgroundImage();
+          return Center(
+          child: FullscreenBackgroundImage(),
+        );
+        }
+         if (state.status  == CartStatus.loading) {
+          return Center(
+          child: CircularProgressIndicator(),
+        );
         }
         if (state.status == CartStatus.loaded) {
           if (state.cart.items.isEmpty) {

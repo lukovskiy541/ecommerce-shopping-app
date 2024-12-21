@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce_app/blocs/bloc/deliverysearch_bloc.dart';
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/blocs/navigation/navigation_cubit.dart';
@@ -252,6 +253,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<DeliverysearchBloc>(
+            create: (context) => DeliverysearchBloc(
+            ),
+          ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
