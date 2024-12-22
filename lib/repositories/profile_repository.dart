@@ -26,13 +26,18 @@ class ProfileRepository {
     }
   }
 
-  Future<User> addFavoriteProduct({
+  Future<User> toggleFavoriteProduct({
     required User user,
     required Product product,
   }) async {
     try {
       final updatedFavoriteProducts = List<String>.from(user.favoriteProducts);
-      updatedFavoriteProducts.add(product.id);
+      if (updatedFavoriteProducts.contains(product.id)) {
+        updatedFavoriteProducts.remove(product.id);
+      } else {
+        updatedFavoriteProducts.add(product.id);
+      }
+      
 
       await firebaseFirestore.collection('users').doc(user.id).update({
         'favoriteProducts': updatedFavoriteProducts,
@@ -69,5 +74,15 @@ class ProfileRepository {
     }
   }
 
-  
+  clearfavorites({required User user}) async {
+    try {
+      await firebaseFirestore.collection('users').doc(user.id).update({
+        'favoriteProducts': [],
+      });
+
+      return user.copyWith(favoriteProducts: []);
+    } catch (e) {
+      throw CustomError(message: 'Failed to clear favorites');
+    }
+  }
 }

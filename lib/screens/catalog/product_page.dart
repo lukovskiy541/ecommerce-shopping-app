@@ -85,7 +85,7 @@ class _ProductPageState extends State<ProductPage> {
                 onPressed: () {
                   context
                       .read<ProfileCubit>()
-                      .addFavorite(product: widget.product);
+                      .toggleFavorite(product: widget.product);
                 },
                 icon: state.user.favoriteProducts.contains(widget.product.id)
                     ? Icon(Icons.favorite)
@@ -111,11 +111,13 @@ class _ProductPageState extends State<ProductPage> {
                     _scrollToSizes();
                   }
                 } else {
-                  if (context.read<CartBloc>().state.cart.items.any(
-                      (element) => element.product.id == widget.product.id &&
-                          element.selectedSize == _selectedSize.toString())) {
+                  if (context.read<CartBloc>().state.cart.items.any((element) =>
+                      element.product.id == widget.product.id &&
+                      element.selectedSize == _selectedSize.toString())) {
                     context.read<CartBloc>().add(CartUpdateItemQuantityEvent(
-                        productId: widget.product.id, quantity: 1, selectedSize: _selectedSize.toString()));
+                        productId: widget.product.id,
+                        quantity: 1,
+                        selectedSize: _selectedSize.toString()));
                     context.read<NavigationCubit>().switchTab(2);
                   } else
                     context.read<CartBloc>().add(CartAddItemEvent(

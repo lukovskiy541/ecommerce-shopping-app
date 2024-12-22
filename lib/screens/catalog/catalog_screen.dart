@@ -87,7 +87,7 @@ class _CatalogScreenState extends State<CatalogScreen>
                               onTap: () {
                                 pushScreen(
                                 context,
-                                screen: CatalogCategoryScreen(productType:gender.productTypes[index]),
+                                screen: CatalogCategoryScreen(productType:gender.productTypes[index], gender: gender),
                                 withNavBar: true,
                               );
                                

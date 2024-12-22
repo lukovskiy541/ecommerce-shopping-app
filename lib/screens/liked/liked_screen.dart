@@ -1,4 +1,6 @@
+import 'package:ecommerce_app/screens/liked/saved_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class LikedScreen extends StatefulWidget {
   const LikedScreen({super.key});
@@ -44,7 +46,6 @@ class _LikedScreenState extends State<LikedScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                 
                 ],
               ),
             ),
@@ -53,20 +54,25 @@ class _LikedScreenState extends State<LikedScreen> {
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              Padding(
-                padding: const EdgeInsets.only(top: 25.0),
-                child: Stack(children: [
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/saved.png'),
-                        fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () {
+                  pushScreenWithNavBar(context, SavedScreen());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25.0),
+                  child: Stack(children: [
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/saved.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 25.0),
@@ -81,7 +87,6 @@ class _LikedScreenState extends State<LikedScreen> {
                       ),
                     ),
                   ),
-                 
                 ]),
               ),
               Padding(
@@ -97,10 +102,8 @@ class _LikedScreenState extends State<LikedScreen> {
                       ),
                     ),
                   ),
-                  
                 ]),
               ),
-             
             ],
           ),
         ),

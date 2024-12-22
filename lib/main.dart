@@ -16,7 +16,7 @@ import 'package:ecommerce_app/repositories/order_repository.dart';
 import 'package:ecommerce_app/repositories/products_repository.dart';
 import 'package:ecommerce_app/repositories/profile_repository.dart';
 import 'package:ecommerce_app/screens/cart/cart_screen.dart';
-import 'package:ecommerce_app/screens/main%20pages/liked_screen.dart';
+import 'package:ecommerce_app/screens/liked/liked_screen.dart';
 import 'package:ecommerce_app/screens/catalog/search_screen.dart';
 import 'package:ecommerce_app/screens/main%20pages/shops_screen.dart';
 import 'package:ecommerce_app/utils/my_flutter_app_icons.dart';

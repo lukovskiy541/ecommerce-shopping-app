@@ -56,6 +56,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  
+
   Future<void> updateProfile({required User user}) async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
@@ -73,11 +75,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> addFavorite({required Product product}) async {
+  Future<void> toggleFavorite({required Product product}) async {
     emit(state.copyWith(profileStatus: ProfileStatus.loading));
 
     try {
-      final updatedUser = await profileRepository.addFavoriteProduct(
+      final updatedUser = await profileRepository.toggleFavoriteProduct(
         user: state.user,
         product: product,
       );
@@ -101,7 +103,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       await orderRepository.createOrder(
         order: order,
       );
-      
+
       emit(state.copyWith(
         profileStatus: ProfileStatus.loaded,
       ));
@@ -113,5 +115,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       ));
       return false;
     }
+  }
+
+  void clearFavorites() {
+    profileRepository.clearfavorites(user: state.user);
+    emit(state.copyWith(
+      user: state.user.copyWith(favoriteProducts: []),
+    ));
   }
 }
