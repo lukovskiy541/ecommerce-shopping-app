@@ -26,7 +26,7 @@ class _LikedScreenState extends State<LikedScreen> {
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(80),
+            preferredSize: const Size.fromHeight(60),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -44,38 +44,7 @@ class _LikedScreenState extends State<LikedScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      cursorHeight: 20,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        height: 0.9,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Мої вподобання',
-                        hintStyle: TextStyle(
-                            fontSize: 17,
-                            height: 1.1,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(bottom: 3, top: -3),
-                      ),
-                    ),
-                  ),
+                 
                 ],
               ),
             ),
@@ -85,157 +54,53 @@ class _LikedScreenState extends State<LikedScreen> {
           delegate: SliverChildListDelegate(
             [
               Padding(
-                padding: const EdgeInsets.only(top: 15.0),
+                padding: const EdgeInsets.only(top: 25.0),
                 child: Stack(children: [
                   Container(
                     width: double.infinity,
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/shopping_type.png'),
+                        image: AssetImage('assets/saved.png'),
                         fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 40.0,
-                    child: Text(
-                      'Збережені',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 16.0,
-                    child: Text(
-                      'мій список бажань',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
                       ),
                     ),
                   ),
                 ]),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15.0),
+                padding: const EdgeInsets.only(top: 25.0),
                 child: Stack(children: [
                   Container(
                     width: double.infinity,
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/shopping_type.png'),
+                        image: AssetImage('assets/favorite_brands.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 40.0,
-                    child: Text(
-                      'Каталог',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 16.0,
-                    child: Text(
-                      'всі товари',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                 
                 ]),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15.0),
+                padding: const EdgeInsets.only(top: 25.0),
                 child: Stack(children: [
                   Container(
                     width: double.infinity,
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/shopping_type.png'),
+                        image: AssetImage('assets/watched_products.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 40.0,
-                    child: Text(
-                      'Каталог',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 16.0,
-                    child: Text(
-                      'всі товари',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  
                 ]),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Stack(children: [
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/shopping_type.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 40.0,
-                    child: Text(
-                      'Каталог',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16.0,
-                    bottom: 16.0,
-                    child: Text(
-                      'всі товари',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ]),
-              )
+             
             ],
           ),
         ),

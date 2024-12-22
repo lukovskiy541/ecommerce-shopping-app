@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
-import 'package:ecommerce_app/models/cart_item_model.dart';
 import 'package:ecommerce_app/models/order_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
 import 'package:ecommerce_app/screens/cart/delivery_screen.dart';
