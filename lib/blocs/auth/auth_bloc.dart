@@ -25,10 +25,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<DeleteAccountRequestedEvent>((event, emit) async {
+      if (state.authStatus == AuthStatus.authenticated && state.user != null) {
+        try {
+          await authRepository.deleteUserData(uid: state.user!.uid);
+
+          await authRepository.deleteAccount();
+
+          emit(state.copyWith(
+              authStatus: AuthStatus.unauthenticated, user: null));
+        } catch (e) {
+          print('Помилка видалення акаунту: $e');
+        }
+      }
+    });
+
     on<SignOutRequestedEvent>((event, emit) async {
       await authRepository.signout();
-       emit(
-            state.copyWith(authStatus: AuthStatus.unauthenticated, user: null));
+      emit(state.copyWith(authStatus: AuthStatus.unauthenticated, user: null));
     });
   }
 }

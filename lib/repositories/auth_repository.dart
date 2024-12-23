@@ -103,6 +103,17 @@ Future<void> signin({
     }
   }
   
+   Future<void> deleteUserData({required String uid}) async {
+    await firebaseFirestore.collection('users').doc(uid).delete();
+  }
+
+  Future<void> deleteAccount() async {
+    final user = firebaseAuth.currentUser;
+    if (user != null) {
+      await user.delete();
+    }
+  }
+  
   Future<void> signout() async {
     await firebaseAuth.signOut();
   }

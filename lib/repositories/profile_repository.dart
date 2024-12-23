@@ -11,20 +11,36 @@ class ProfileRepository {
   });
 
   Future<User> updateProfile({required User user}) async {
-    try {
-      await firebaseFirestore.collection('users').doc(user.id).update({
-        'name': user.name,
-        'surname': user.surname,
-        'patronymic': user.patronymic,
-        'phone': user.phone,
-        'addresses': user.addresses.map((e) => e.toMap()).toList(),
-      });
+  try {
+    await firebaseFirestore.collection('users').doc(user.id).update({
+      'email': user.email,
+      'name': user.name,
+      'surname': user.surname,
+      'patronymic': user.patronymic,
+      'sex': user.sex,
+      'birthday': user.birthday,
+      'phone': user.phone,
+      'bonusPoints': user.bonusPoints,
+      'cardLevel': user.cardLevel,
+      'hasSubscription': user.hasSubscription,
+      'addresses': user.addresses.map((e) => e.toMap()).toList(),
+      'shoeSize': user.shoeSize,
+      'clothingSize': user.clothingSize,
+      'favoriteCategories': user.favoriteCategories,
+      'favoriteProducts': user.favoriteProducts,
+      'orderHistory': user.orderHistory,
+      'reviews': user.reviews.map((e) => e.toMap()).toList(),
+      'preferredLanguage': user.preferredLanguage,
+      'notificationSettings': user.notificationSettings.toMap(),
+      'createdAt': user.createdAt,
+      'lastLogin': user.lastLogin,
+    });
 
-      return user;
-    } catch (e) {
-      throw CustomError(message: 'Failed to update profile');
-    }
+    return user;
+  } catch (e) {
+    throw CustomError(message: 'Failed to update profile');
   }
+}
 
   Future<User> toggleFavoriteProduct({
     required User user,

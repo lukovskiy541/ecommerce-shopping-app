@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/screens/for_you/for_you_screen.dart';
@@ -12,7 +14,24 @@ import 'package:ecommerce_app/screens/profile/user_current_orders.dart';
 import 'package:ecommerce_app/screens/profile/user_orders_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+
+Future<File?> pickImageFromGallery() async {
+  final ImagePicker picker = ImagePicker();
+
+  final XFile? image = await picker.pickImage(
+    source: ImageSource.gallery,
+    maxWidth: 512,
+    maxHeight: 512,
+    imageQuality: 75,
+  );
+
+  if (image != null) {
+    return File(image.path);
+  }
+  return null;
+}
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
@@ -77,10 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 15),
                     child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey[200],
-                      child: const Icon(Icons.person),
-                    ),
+                        radius: 50, child: const Icon(Icons.person)),
                   ),
                   if (state.authStatus == AuthStatus.authenticated) ...[
                     BlocBuilder<ProfileCubit, ProfileState>(
@@ -138,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(color: Colors.grey, fontSize: 16),
                       textAlign: TextAlign.center,
                     )),
-                     Center(
+                    Center(
                         child: Text(
                       ' замовлень і керуйте інформацією',
                       style: TextStyle(color: Colors.grey, fontSize: 16),
