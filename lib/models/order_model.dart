@@ -127,11 +127,6 @@ class PaymentInfo {
 
 enum OrderStatus {
   pending,
-  confirmed,
-  processing,
-  readyToShip,
-  shipped,
-  delivered,
   completed,
   cancelled,
   returned

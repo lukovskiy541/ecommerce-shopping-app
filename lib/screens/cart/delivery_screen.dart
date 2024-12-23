@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/blocs/bloc/deliverysearch_bloc.dart';
+import 'package:ecommerce_app/blocs/delivery_search/deliverysearch_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

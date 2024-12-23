@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:ecommerce_app/models/order_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/repositories/auth_repository.dart';
 import 'package:ecommerce_app/repositories/order_repository.dart';
@@ -26,8 +25,10 @@ class ProfileCubit extends Cubit<ProfileState> {
   }) : super(ProfileState.initial()) {
     authSubscription = authRepository.user.listen((fbAuth.User? user) {
       if (user == null) {
+          print("User is null, emitting initial state");
         emit(state.copyWith(user: null, profileStatus: ProfileStatus.initial));
       } else {
+            print("User exists, getting profile");
         getProfile(uid: user.uid);
       }
     });
@@ -96,26 +97,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<bool> addOrder({required Order order}) async {
-    emit(state.copyWith(profileStatus: ProfileStatus.loading));
-
-    try {
-      await orderRepository.createOrder(
-        order: order,
-      );
-
-      emit(state.copyWith(
-        profileStatus: ProfileStatus.loaded,
-      ));
-      return true;
-    } on CustomError catch (e) {
-      emit(state.copyWith(
-        profileStatus: ProfileStatus.error,
-        error: e,
-      ));
-      return false;
-    }
-  }
+ 
 
   void clearFavorites() {
     profileRepository.clearfavorites(user: state.user);

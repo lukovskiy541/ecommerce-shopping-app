@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
+import 'package:ecommerce_app/blocs/orders/order_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/models/order_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
@@ -45,11 +48,11 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
         return BlocBuilder<CartBloc, CartState>(
           builder: (context, cartState) {
             double full_price = List.generate(
-  cartState.cart.items.length,
-  (index) =>
-      cartState.cart.items[index].price *
-      cartState.cart.items[index].quantity,
-).fold(0, (a, b) => a + b);
+              cartState.cart.items.length,
+              (index) =>
+                  cartState.cart.items[index].price *
+                  cartState.cart.items[index].quantity,
+            ).fold(0, (a, b) => a + b);
 
             return Scaffold(
               appBar: AppBar(),
@@ -61,38 +64,45 @@ class _OrderPlacementScreenState extends State<OrderPlacementScreen> {
                 child: FloatingActionButton.extended(
                   onPressed: () async {
                     if (_isDeliverySelected) {
-                            print('recieved');
-                            Order order = Order(
-                              id: '',
-                              userId: profileState.user.id,
-                              status: OrderStatus.processing,
-                              items: cartState.cart.items,
-                              deliveryAdress: _postDepartment,
-                              createdAt: DateTime.now(),
-                              subtotal: full_price,
-                              deliveryCost: 11,
-                              discount: 0,
-                              bonusesUsed: 0,
-                              bonusesEarned: 0,
-                              total: full_price + 11,
-                              isGift: false,
-                            );
-                            bool result = await context
-                                .read<ProfileCubit>()
-                                .addOrder(order: order);
-                            if (result) {
-                               pushWithNavBar(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          OrderSuccessScreen()));
-                              context.read<CartBloc>().add(CartClearEvent());
-                             
-                            }
-                          }
-                  }
-                     
-                  ,
+                      print('recieved');
+                      Order order = Order(
+                        id: '',
+                        userId: profileState.user.id,
+                        status: OrderStatus.pending,
+                        items: cartState.cart.items,
+                        deliveryAdress: _postDepartment,
+                        createdAt: DateTime.now(),
+                        subtotal: full_price,
+                        deliveryCost: 11,
+                        discount: 0,
+                        bonusesUsed: 0,
+                        bonusesEarned: 0,
+                        total: full_price + 11,
+                        isGift: false,
+                      );
+                      final completer = Completer<bool>();
+                      context.read<OrderBloc>().add(
+                          AddOrderEvent(order: order, completer: completer));
+                      completer.future.then((result) {
+                        if (result) {
+                          pushWithNavBar(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderSuccessScreen()),
+                          );
+                          context.read<CartBloc>().add(CartClearEvent());
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Не вдалося оформити замовлення. Спробуйте ще раз."),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      });
+                    }
+                  },
                   label: Text(
                     'Оформити замовлення',
                     style: TextStyle(color: Colors.white, fontSize: 15),

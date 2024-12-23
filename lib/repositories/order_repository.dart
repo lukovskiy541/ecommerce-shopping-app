@@ -65,4 +65,24 @@ class OrderRepository {
       throw Exception('Failed to create order: $e');
     }
   }
+  
+
+  Future<List<Order.Order>> getOrders({required String userId}) async {
+    try {
+      final ordersSnapshot = await firebaseFirestore
+          .collection('orders')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      return ordersSnapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return Order.Order.fromMap(data);
+          })
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to get orders: $e');
+    }
+  }
 }

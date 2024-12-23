@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/blocs/auth/auth_bloc.dart';
-import 'package:ecommerce_app/blocs/bloc/deliverysearch_bloc.dart';
+import 'package:ecommerce_app/blocs/delivery_search/deliverysearch_bloc.dart';
 import 'package:ecommerce_app/blocs/cart/cart_bloc.dart';
 import 'package:ecommerce_app/blocs/genders/genders_bloc.dart';
 import 'package:ecommerce_app/blocs/navigation/navigation_cubit.dart';
+import 'package:ecommerce_app/blocs/orders/order_bloc.dart';
 import 'package:ecommerce_app/blocs/products/products_bloc.dart';
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
 import 'package:ecommerce_app/blocs/signin/signin_cubit.dart';
@@ -128,6 +129,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<NavigationCubit>(
             create: (context) => NavigationCubit(),
+          ),
+          BlocProvider<OrderBloc>(
+            create: (context) => OrderBloc(
+              orderRepository: context.read<OrderRepository>(),
+              profileCubit: context.read<ProfileCubit>(),
+            ),
           ),
         ],
         child: MaterialApp(

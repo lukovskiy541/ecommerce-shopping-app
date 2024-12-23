@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:ecommerce_app/blocs/bloc/fetch_departments.dart';
+import 'package:ecommerce_app/blocs/delivery_search/fetch_departments.dart';
 import 'package:equatable/equatable.dart';
 
 part 'deliverysearch_event.dart';

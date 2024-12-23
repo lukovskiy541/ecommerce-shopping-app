@@ -26,7 +26,7 @@ class User extends Equatable {
   final List<String> favoriteCategories;
   final List<String> favoriteProducts;
 
-  final List<dynamic> orderHistory;
+  final List<String> orderHistory;
   final List<Review> reviews;
 
   final String? preferredLanguage;
@@ -99,8 +99,7 @@ class User extends Equatable {
               .toList() ??
           [],
       orderHistory: (userData?['orderHistory'] as List<dynamic>?)
-              ?.map(
-                  (order) => order.Order.fromMap(order as Map<String, dynamic>))
+              ?.map((e) => e.toString())
               .toList() ??
           [],
       reviews: (userData?['reviews'] as List<dynamic>?)
@@ -177,7 +176,10 @@ class User extends Equatable {
               ?.map((e) => e.toString())
               .toList() ??
           [],
-      orderHistory: map['orderHistory'] ?? [],
+      orderHistory:  (map['orderHistory'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       reviews: (map['reviews'] as List<dynamic>?)
               ?.map((review) => Review.fromMap(review as Map<String, dynamic>))
               .toList() ??
@@ -234,7 +236,7 @@ class User extends Equatable {
     String? clothingSize,
     List<String>? favoriteCategories,
     List<String>? favoriteProducts,
-    List<dynamic>? orderHistory,
+    List<String>? orderHistory,
     List<Review>? reviews,
     String? preferredLanguage,
     NotificationSettings? notificationSettings,
