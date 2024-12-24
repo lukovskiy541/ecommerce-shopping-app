@@ -106,7 +106,7 @@ class _CatalogCategoryScreenState extends State<CatalogCategoryScreen>
                     ),
                     Icon(
                       Icons.boy,
-                      color: widget.gender.name == "Хлопчикам"
+                      color: widget.gender.name == "Дівчаткам"
                           ? Colors.green.shade300
                           : Colors.black,
                     ),

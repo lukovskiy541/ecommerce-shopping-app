@@ -1,4 +1,5 @@
 
+import 'package:ecommerce_app/screens/catalog/brands_screen.dart';
 import 'package:ecommerce_app/screens/catalog/catalog_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -116,21 +117,30 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Stack(children: [
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/brands.png'),
-                          fit: BoxFit.cover,
+                GestureDetector(
+                   onTap: () {
+                         pushScreen(
+                                  context,
+                                  screen: BrandsScreen(),
+                                  withNavBar: true,
+                                );
+                      },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Stack(children: [
+                      Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/brands.png'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                  
-                  ]),
+                    
+                    ]),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),

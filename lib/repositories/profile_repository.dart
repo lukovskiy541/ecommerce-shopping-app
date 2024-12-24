@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/constants/db_constants.dart';
+import 'package:ecommerce_app/models/brand_model.dart';
 import 'package:ecommerce_app/models/custom_error.dart';
 import 'package:ecommerce_app/models/product_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
@@ -11,36 +12,36 @@ class ProfileRepository {
   });
 
   Future<User> updateProfile({required User user}) async {
-  try {
-    await firebaseFirestore.collection('users').doc(user.id).update({
-      'email': user.email,
-      'name': user.name,
-      'surname': user.surname,
-      'patronymic': user.patronymic,
-      'sex': user.sex,
-      'birthday': user.birthday,
-      'phone': user.phone,
-      'bonusPoints': user.bonusPoints,
-      'cardLevel': user.cardLevel,
-      'hasSubscription': user.hasSubscription,
-      'addresses': user.addresses.map((e) => e.toMap()).toList(),
-      'shoeSize': user.shoeSize,
-      'clothingSize': user.clothingSize,
-      'favoriteCategories': user.favoriteCategories,
-      'favoriteProducts': user.favoriteProducts,
-      'orderHistory': user.orderHistory,
-      'reviews': user.reviews.map((e) => e.toMap()).toList(),
-      'preferredLanguage': user.preferredLanguage,
-      'notificationSettings': user.notificationSettings.toMap(),
-      'createdAt': user.createdAt,
-      'lastLogin': user.lastLogin,
-    });
+    try {
+      await firebaseFirestore.collection('users').doc(user.id).update({
+        'email': user.email,
+        'name': user.name,
+        'surname': user.surname,
+        'patronymic': user.patronymic,
+        'sex': user.sex,
+        'birthday': user.birthday,
+        'phone': user.phone,
+        'bonusPoints': user.bonusPoints,
+        'cardLevel': user.cardLevel,
+        'hasSubscription': user.hasSubscription,
+        'addresses': user.addresses.map((e) => e.toMap()).toList(),
+        'shoeSize': user.shoeSize,
+        'clothingSize': user.clothingSize,
+        'favoriteCategories': user.favoriteCategories,
+        'favoriteProducts': user.favoriteProducts,
+        'orderHistory': user.orderHistory,
+        'reviews': user.reviews.map((e) => e.toMap()).toList(),
+        'preferredLanguage': user.preferredLanguage,
+        'notificationSettings': user.notificationSettings.toMap(),
+        'createdAt': user.createdAt,
+        'lastLogin': user.lastLogin,
+      });
 
-    return user;
-  } catch (e) {
-    throw CustomError(message: 'Failed to update profile');
+      return user;
+    } catch (e) {
+      throw CustomError(message: 'Failed to update profile');
+    }
   }
-}
 
   Future<User> toggleFavoriteProduct({
     required User user,
@@ -53,7 +54,6 @@ class ProfileRepository {
       } else {
         updatedFavoriteProducts.add(product.id);
       }
-      
 
       await firebaseFirestore.collection('users').doc(user.id).update({
         'favoriteProducts': updatedFavoriteProducts,
@@ -64,6 +64,8 @@ class ProfileRepository {
       throw CustomError(message: 'Failed to add favorite product');
     }
   }
+  
+ 
 
   Future<User> getProfile({required String uid}) async {
     try {

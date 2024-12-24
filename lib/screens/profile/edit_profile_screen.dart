@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/blocs/profile/profile_cubit.dart';
+import 'package:ecommerce_app/screens/profile/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({super.key});
@@ -219,9 +221,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: FloatingActionButton.extended(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                               DateTime parsedBirthday = DateTime.parse(
-        _birthdayController.text.split('-').reversed.join('-')
-      );
+                              DateTime parsedBirthday = DateTime.parse(
+                                  _birthdayController.text
+                                      .split('-')
+                                      .reversed
+                                      .join('-'));
                               try {
                                 await context
                                     .read<ProfileCubit>()
@@ -233,7 +237,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             _patronymicController.text.trim(),
                                         phone: _phoneController.text.trim(),
                                         birthday: parsedBirthday,
-                                            sex: _sex,
+                                        sex: _sex,
                                       ),
                                     );
 
@@ -264,6 +268,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                     ),
+                    TextButton(
+                        onPressed: () {
+                          pushScreenWithNavBar(context, ChangePassword());
+                        },
+                        child: Text(
+                          'Змінити пароль',
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        )),
                   ],
                 ),
               ),
