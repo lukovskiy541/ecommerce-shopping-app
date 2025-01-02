@@ -13,7 +13,7 @@ class BrandsRepository {
   Future<List<Brand>> getBrands() async {
     QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection('brands').get();
-
+print("getting brands");
     return snapshot.docs.map((doc) => Brand.fromFirestore(doc)).toList();
   }
 }
