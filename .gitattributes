@@ -1,0 +1,39 @@
+# Mark generated files as generated
+*.g.dart linguist-generated=true
+
+# Mark JavaScript files as vendored
+*.js linguist-vendored=true
+
+# Mark CMake files as vendored
+*.cmake linguist-vendored=true
+CMakeLists.txt linguist-vendored=true
+
+# Mark iOS and Android platform code as vendored
+ios/* linguist-vendored=true
+android/* linguist-vendored=true
+
+# Explicitly mark Dart as the primary language
+*.dart linguist-language=Dart
+
+# Mark other languages as vendored
+*.java linguist-vendored=true
+*.kt linguist-vendored=true
+*.swift linguist-vendored=true
+*.objc linguist-vendored=true
+*.m linguist-vendored=true
+*.mm linguist-vendored=true
+*.cpp linguist-vendored=true
+*.c linguist-vendored=true
+*.h linguist-vendored=true
+*.hpp linguist-vendored=true
+*.py linguist-vendored=true
+*.rb linguist-vendored=true
+*.go linguist-vendored=true
+*.ts linguist-vendored=true
+*.cs linguist-vendored=true
+*.php linguist-vendored=true
+*.html linguist-vendored=true
+*.css linguist-vendored=true
+*.xml linguist-vendored=true
+*.yaml linguist-vendored=true
+*.json linguist-vendored=true
